@@ -1,23 +1,31 @@
 function fetchEvents() {
     const selectedWeek = document.getElementById('week-selector').value;
-    
+  
     // Convert selectedWeek to a format suitable for your RSS feed query
     // You might need to parse the input or use a date library
-    
-    // Example Google Feed API URL (replace with your RSS feed URL)
-    const rssFeedUrl = `https://experiencebu.brocku.ca/events.rss`;
   
-    fetch(rssFeedUrl)
+    // Example RSS feed URL (replace with your actual RSS feed URL)
+    const rssFeedUrl = 'https://experiencebu.brocku.ca/events.rss';
+  
+    // Use an alternative method to fetch RSS data due to CORS restrictions
+    const proxyUrl = 'https://api.allorigins.win/get?url=';
+    const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
+  
+    fetch(fetchUrl)
       .then(response => response.json())
       .then(data => {
+        // Parse XML data from the fetched JSON
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+  
         // Extract relevant information from the feed's items
-        const events = data.responseData.feed.entries.map(entry => {
+        const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
           return {
-            title: entry.title,
-            description: entry.content,
-            startTime: entry.publishedDate,
-            endTime: entry.publishedDate, // You might need to extract end time from the feed
-            link: entry.link,
+            title: item.querySelector('title').textContent,
+            description: item.querySelector('description').textContent,
+            startTime: item.querySelector('start').textContent,
+            endTime: item.querySelector('end').textContent,
+            link: item.querySelector('link').textContent,
           };
         });
   
