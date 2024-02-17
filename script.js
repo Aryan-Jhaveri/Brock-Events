@@ -11,7 +11,11 @@ function fetchEvents() {
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
   
-    fetch(rssFeedUrl)
+    // Use a server-side proxy to fetch the RSS feed
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/'; // This is a free CORS proxy
+    const fetchUrl = proxyUrl + rssFeedUrl;
+  
+    fetch(fetchUrl)
       .then(response => response.text())
       .then(data => {
         // Parse XML data from the fetched text
