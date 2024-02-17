@@ -11,6 +11,10 @@ function fetchEvents() {
     const proxyUrl = 'https://api.allorigins.win/get?url=';
     const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
   
+    // Display a loading indicator
+    const eventsBody = document.getElementById('events-body');
+    eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+  
     fetch(fetchUrl)
       .then(response => response.json())
       .then(data => {
@@ -34,6 +38,8 @@ function fetchEvents() {
       })
       .catch(error => {
         console.error('Error fetching RSS feed:', error);
+        // Display an error message to the user
+        eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
       });
   }
   
