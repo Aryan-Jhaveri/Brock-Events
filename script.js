@@ -24,11 +24,14 @@ function fetchEvents() {
   
         // Extract relevant information from the feed's items
         const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
+          const startTime = item.querySelector('start').textContent;
+          const endTime = item.querySelector('end').textContent;
+  
           return {
             title: item.querySelector('title').textContent,
             description: item.querySelector('description').textContent,
-            startTime: item.querySelector('start').textContent,
-            endTime: item.querySelector('end').textContent,
+            startTime: new Date(startTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
+            endTime: new Date(endTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
             link: item.querySelector('link').textContent,
           };
         });
@@ -41,22 +44,5 @@ function fetchEvents() {
         // Display an error message to the user
         eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
       });
-  }
-  
-  function displayEvents(events) {
-    const eventsBody = document.getElementById('events-body');
-    eventsBody.innerHTML = '';
-  
-    events.forEach(event => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${event.title}</td>
-        <td>${event.description}</td>
-        <td>${event.startTime}</td>
-        <td>${event.endTime}</td>
-        <td><a href="${event.link}" target="_blank">Link</a></td>
-      `;
-      eventsBody.appendChild(row);
-    });
   }
   
