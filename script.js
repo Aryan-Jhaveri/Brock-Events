@@ -16,11 +16,11 @@ function fetchEvents() {
     eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
   
     fetch(fetchUrl)
-      .then(response => response.json())
+      .then(response => response.text()) // Change to text() instead of json()
       .then(data => {
-        // Parse XML data from the fetched JSON
+        // Parse XML data from the fetched text
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+        const xmlDoc = parser.parseFromString(data, 'text/xml');
   
         // Extract relevant information from the feed's items
         const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
