@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Calendar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>Event Calendar</h1>
+    <label for="week-selector">Select a week:</label>
+    <input type="week" id="week-selector">
+    <button onclick="fetchEvents()">Fetch Events</button>
+    
+    <table id="events-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Start Time (EST)</th>
+          <th>End Time (EST)</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody id="events-body"></tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
