@@ -5,7 +5,7 @@ function fetchEvents() {
     // You might need to parse the input or use a date library
     
     // Example Google Feed API URL (replace with your RSS feed URL)
-    const rssFeedUrl = `https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=https://experiencebu.brocku.ca/events.rss`;
+    const rssFeedUrl = `https://experiencebu.brocku.ca/events.rss`;
   
     fetch(rssFeedUrl)
       .then(response => response.json())
