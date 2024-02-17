@@ -7,16 +7,12 @@ function fetchEvents() {
     // Example RSS feed URL (replace with your actual RSS feed URL)
     const rssFeedUrl = 'https://experiencebu.brocku.ca/events.rss';
   
-    // Use an alternative method to fetch RSS data due to CORS restrictions
-    const proxyUrl = 'https://api.allorigins.win/get?url=';
-    const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
-  
     // Display a loading indicator
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
   
-    fetch(fetchUrl)
-      .then(response => response.text()) // Change to text() instead of json()
+    fetch(rssFeedUrl)
+      .then(response => response.text())
       .then(data => {
         // Parse XML data from the fetched text
         const parser = new DOMParser();
