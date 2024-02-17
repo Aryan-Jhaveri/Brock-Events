@@ -1,24 +1,32 @@
 function fetchEvents() {
-    // Get the selected week
     const selectedWeek = document.getElementById('week-selector').value;
+    
+    // Convert selectedWeek to a format suitable for your RSS feed query
+    // You might need to parse the input or use a date library
+    
+    // Example Google Feed API URL (replace with your RSS feed URL)
+    const rssFeedUrl = `https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=https://experiencebu.brocku.ca/events.rss`;
   
-    // TODO: Fetch events from the RSS feed based on the selected week
-    // You can use JavaScript Fetch API or other methods to fetch data from the RSS feed
+    fetch(rssFeedUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Extract relevant information from the feed's items
+        const events = data.responseData.feed.entries.map(entry => {
+          return {
+            title: entry.title,
+            description: entry.content,
+            startTime: entry.publishedDate,
+            endTime: entry.publishedDate, // You might need to extract end time from the feed
+            link: entry.link,
+          };
+        });
   
-    // Dummy data for testing
-    const dummyEventData = [
-      {
-        title: 'Brock Westmarches Extralife Charity Stream!',
-        description: 'Join us for 24 hours of Dungeons and Dragons as we raise money for McMasters Children\'s Hospital!',
-        startTime: 'Friday, February 16, 2024 5:00 PM EST',
-        endTime: 'Saturday, February 17, 2024 5:00 PM EST',
-        link: 'https://experiencebu.brocku.ca/event/258201'
-      },
-      // Add more event objects as needed
-    ];
-  
-    // Display events in the table
-    displayEvents(dummyEventData);
+        // Display events in the table
+        displayEvents(events);
+      })
+      .catch(error => {
+        console.error('Error fetching RSS feed:', error);
+      });
   }
   
   function displayEvents(events) {
