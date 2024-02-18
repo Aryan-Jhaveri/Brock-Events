@@ -33,9 +33,45 @@ document.addEventListener('DOMContentLoaded', function () {
   
   
   function parseRSS(xml, selectedWeek) {
-    // Your code to parse RSS feed and filter events for the selected week
-    // Return an array of events
+    const events = [];
+  
+    // Use jQuery to parse XML
+    $(xml).find('item').each(function () {
+      const title = $(this).find('title').text();
+      const description = $(this).find('description').text();
+      const link = $(this).find('link').text();
+      const pubDate = $(this).find('pubDate').text();
+  
+      // Convert pubDate to a valid start date (modify as needed)
+      const startDate = moment(pubDate).format('YYYY-MM-DD');
+  
+      // For simplicity, set the end date to be the same as the start date
+      const endDate = startDate;
+  
+      // Check if the event falls within the selected week
+      if (isEventInSelectedWeek(startDate, selectedWeek)) {
+        events.push({
+          title: title,
+          description: description,
+          start: startDate,
+          end: endDate,
+          link: link
+        });
+      }
+    });
+  
+    return events;
   }
+  
+  // Function to check if an event falls within the selected week
+  function isEventInSelectedWeek(eventDate, selectedWeek) {
+    // Implement the logic to check if the event date is within the selected week
+    // You may use a library like moment.js to handle date comparisons
+  
+    // For example, you can compare eventDate with the start and end dates of the selected week
+    // and return true if it falls within the week, otherwise return false
+  }
+  
   
   function displayEventsInTable(events) {
     const eventsBody = $('#events-body');
