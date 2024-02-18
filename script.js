@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
   
     return events;
   }
-  
+  function populateWeekOptions() {
+    // Your existing code for populating week options
+  }
   function getWeekNumber(date) {
     const startDate = new Date(date);
     startDate.setHours(0, 0, 0, 0);
