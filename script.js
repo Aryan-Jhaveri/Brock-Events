@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchEvents();
   }
   
-  function fetchEvents() {
+  function fetchEvents(start, end, timezone, callback, selectedWeek){
     // Make an AJAX request to the RSS feed
     $.ajax({
       url: 'https://experiencebu.brocku.ca/events.rss',
