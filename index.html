@@ -32,6 +32,25 @@
   </table>
 
   <script>
+    function displayEvents(events) {
+      const eventsBody = document.getElementById('events-body');
+      eventsBody.innerHTML = ''; // Clear previous content
+
+      events.forEach(event => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${event.title}</td>
+          <td>${event.description}</td>
+          <td>${event.startTime}</td>
+          <td>${event.endTime}</td>
+          <td><a href="${event.link}" target="_blank">Link</a></td>
+        `;
+        eventsBody.appendChild(row);
+      });
+    }
+  </script>
+
+  <script>
     function fetchEvents() {
       const selectedWeek = document.getElementById('week-selector').value;
 
@@ -45,7 +64,11 @@
       const eventsBody = document.getElementById('events-body');
       eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
 
-      fetch(rssFeedUrl, { mode: 'cors' })
+      // Use a different CORS proxy
+      const proxyUrl = 'https://allorigins.win/get?url=';
+      const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
+
+      fetch(fetchUrl)
         .then(response => response.text())
         .then(data => {
           // Parse XML data from the fetched text
@@ -74,23 +97,6 @@
           // Display an error message to the user
           eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
         });
-    }
-
-    function displayEvents(events) {
-      const eventsBody = document.getElementById('events-body');
-      eventsBody.innerHTML = ''; // Clear previous content
-
-      events.forEach(event => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${event.title}</td>
-          <td>${event.description}</td>
-          <td>${event.startTime}</td>
-          <td>${event.endTime}</td>
-          <td><a href="${event.link}" target="_blank">Link</a></td>
-        `;
-        eventsBody.appendChild(row);
-      });
     }
   </script>
 </body>
