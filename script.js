@@ -151,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('All Weeks:', weeks); // Log all extracted weeks
   
     return weeks;
-  }
   
 }
 );
