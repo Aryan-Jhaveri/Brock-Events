@@ -10,16 +10,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <!-- Include your custom script.js -->
   <script src="script.js"></script>
+  <!-- Add this to the head section of your HTML -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 
 <body>
   <h1>Event Calendar</h1>
 
-  <!-- Add a week selector dropdown -->
-  <label for="week-selector">Select Week: </label>
-  <select id="week-selector">
-    <!-- Options will be dynamically added here -->
-  </select>
+<!-- Add this inside the body of your HTML -->
+<input type="text" id="datepicker" placeholder="Select a week">
+
+<!-- Add a week selector dropdown -->
+<label for="week-selector">Select Week: </label>
+<select id="week-selector">
+  <!-- Options will be dynamically added here -->
+</select>
 
   <!-- Add a button to fetch events -->
   <button id="fetch-button">Fetch Events</button>
@@ -147,11 +154,35 @@ function fetchAndDisplayEvents(weekSelector) {
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
   const weekSelector = document.getElementById('week-selector');
+  const datePicker = flatpickr('#datepicker', {
+    mode: 'range', // Allow selecting a date range
+    dateFormat: 'Y-m-d',
+    onClose: function (selectedDates) {
+      const startDate = selectedDates[0];
+      const endDate = selectedDates[1];
+      if (startDate && endDate) {
+        const formattedStartDate = formatDate(startDate);
+        const formattedEndDate = formatDate(endDate);
+        const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
+        console.log('Selected Week:', selectedWeek);
+        fetchAndDisplayEvents(selectedWeek);
+      } else {
+        console.warn('No week selected. Please choose a week.');
+      }
+    }
+  });
 
   if (fetchButton && weekSelector) {
     fetchButton.addEventListener('click', function () {
-      fetchAndDisplayEvents(weekSelector);
+      const selectedWeek = weekSelector.value;
+      if (selectedWeek) {
+        console.log('Selected Week:', selectedWeek);
+        fetchAndDisplayEvents(selectedWeek);
+      } else {
+        console.warn('No week selected. Please choose a week.');
+      }
     });
+
     // Populate the week selector with dynamically generated options
     populateWeekSelector(weekSelector);
   } else {
@@ -159,7 +190,34 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// ... (rest of the code remains the same)
 
+function populateWeekSelector(datePicker) {
+  // Make an AJAX request to the RSS feed to get all weeks
+  $.ajax({
+    url: 'https://experiencebu.brocku.ca/events.rss',
+    method: 'GET',
+    dataType: 'xml',
+    success: function (data) {
+      // Parse the RSS feed and extract start and end dates of each week
+      const weeks = extractWeeks(data);
+      console.log('Populating Week Selector - All Weeks:', weeks);
+
+      // Set the available date range in the date picker
+      const availableDates = weeks.map(week => ({
+        from: new Date(week.startDate),
+        to: new Date(week.endDate)
+      }));
+      datePicker.set('disable', availableDates);
+
+      // Log the selected value after options are added
+      console.log('Selected Week After Population:', datePicker.selectedDates);
+    },
+    error: function (error) {
+      console.error('Error fetching RSS feed:', error);
+    }
+  });
+}
 
 
 </script>
