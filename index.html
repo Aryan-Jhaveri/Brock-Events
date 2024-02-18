@@ -53,10 +53,10 @@ function populateWeekSelector(selector) {
       // Populate the week selector with dynamically generated options
       weeks.forEach(week => {
         const option = document.createElement('option');
-        option.value = week.value;
+        option.value = `${week.startDate}-${week.endDate}`;
         option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
         selector.appendChild(option);
-      });
+      });      
     },
     error: function (error) {
       console.error('Error fetching RSS feed:', error);
@@ -77,10 +77,11 @@ function parseRSS(xml) {
     const title = item.querySelector('title').textContent;
     const description = item.querySelector('description').textContent;
     const link = item.querySelector('link').textContent;
-    const start = item.querySelector('start').textContent;
-    const end = item.querySelector('end').textContent;
+    const startString = item.querySelector('start').textContent;
+    const endString = item.querySelector('end').textContent;
 
-    // You may need to further process start and end dates based on your needs
+    const start = new Date(startString);
+    const end = new Date(endString);
 
     events.push({
       title: title,
@@ -157,66 +158,28 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function extractWeeks(xml) {
-  const weeks = [];
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xml, 'text/xml');
-  const items = xmlDoc.querySelectorAll('item');
-
-  items.forEach(item => {
-    const startString = item.querySelector('start').textContent; // Change to 'start'
-    const endString = item.querySelector('end').textContent; // Change to 'end'
-
-    // Parse the start and end dates
-    const startDate = new Date(startString);
-    const endDate = new Date(endString);
-
-    // Format dates as YYYY-MM-DD for comparison
-    const formattedStartDate = formatDate(startDate);
-    const formattedEndDate = formatDate(endDate);
-
-    // Check if this week is already in the list
-    const existingWeek = weeks.find(week =>
-      week.startDate === formattedStartDate && week.endDate === formattedEndDate
-    );
-
-    if (!existingWeek) {
-      // New week found, add to the list
-      weeks.push({
-        value: `week${weeks.length + 1}`,
-        label: `Week ${weeks.length + 1}`,
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      });
-    }
-  });
-
-  console.log('All Weeks:', weeks); // Log all extracted weeks
-
-  return weeks;
-}
-
     const weeks = [];
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xml, 'text/xml');
     const items = xmlDoc.querySelectorAll('item');
-
+  
     items.forEach(item => {
-      const startString = item.querySelector('start').textContent;
-      const endString = item.querySelector('end').textContent;
-
+      const startString = item.querySelector('start').textContent; // Change to 'start'
+      const endString = item.querySelector('end').textContent; // Change to 'end'
+  
       // Parse the start and end dates
       const startDate = new Date(startString);
       const endDate = new Date(endString);
-
+  
       // Format dates as YYYY-MM-DD for comparison
       const formattedStartDate = formatDate(startDate);
       const formattedEndDate = formatDate(endDate);
-
+  
       // Check if this week is already in the list
       const existingWeek = weeks.find(week =>
         week.startDate === formattedStartDate && week.endDate === formattedEndDate
       );
-
+  
       if (!existingWeek) {
         // New week found, add to the list
         weeks.push({
@@ -227,10 +190,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       }
     });
+  
     console.log('All Weeks:', weeks); // Log all extracted weeks
-
+  
     return weeks;
   
+}
+);
   </script>
 </body>
 

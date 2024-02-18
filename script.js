@@ -11,10 +11,10 @@ function populateWeekSelector(selector) {
       // Populate the week selector with dynamically generated options
       weeks.forEach(week => {
         const option = document.createElement('option');
-        option.value = week.value;
+        option.value = `${week.startDate}-${week.endDate}`;
         option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
         selector.appendChild(option);
-      });
+      });      
     },
     error: function (error) {
       console.error('Error fetching RSS feed:', error);
@@ -35,10 +35,11 @@ function parseRSS(xml) {
     const title = item.querySelector('title').textContent;
     const description = item.querySelector('description').textContent;
     const link = item.querySelector('link').textContent;
-    const start = item.querySelector('start').textContent;
-    const end = item.querySelector('end').textContent;
+    const startString = item.querySelector('start').textContent;
+    const endString = item.querySelector('end').textContent;
 
-    // You may need to further process start and end dates based on your needs
+    const start = new Date(startString);
+    const end = new Date(endString);
 
     events.push({
       title: title,
