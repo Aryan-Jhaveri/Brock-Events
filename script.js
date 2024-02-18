@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   
-  function parseRSS(xml, selectedWeek) {
+  // Update your parseRSS function
+function parseRSS(xml, selectedWeek) {
     const events = [];
   
     // Use jQuery to parse XML
@@ -40,28 +41,59 @@ document.addEventListener('DOMContentLoaded', function () {
       const title = $(this).find('title').text();
       const description = $(this).find('description').text();
       const link = $(this).find('link').text();
-      const pubDate = $(this).find('pubDate').text();
-  
-      // Convert pubDate to a valid start date (modify as needed)
-      const startDate = moment(pubDate).format('YYYY-MM-DD');
-  
-      // For simplicity, set the end date to be the same as the start date
-      const endDate = startDate;
+      const startDate = $(this).find('start').text();
+      const endDate = $(this).find('end').text();
+      const location = $(this).find('location').text();
   
       // Check if the event falls within the selected week
-      if (isEventInSelectedWeek(startDate, selectedWeek)) {
+      if (isEventInSelectedWeek(startDate, endDate, selectedWeek)) {
         events.push({
           title: title,
           description: description,
           start: startDate,
           end: endDate,
-          link: link
+          link: link,
+          location: location
         });
       }
     });
   
     return events;
   }
+  
+  // Function to check if the event falls within the selected week
+  function isEventInSelectedWeek(eventStartDate, eventEndDate, selectedWeek) {
+    const eventStart = moment(eventStartDate);
+    const eventEnd = moment(eventEndDate);
+  
+    // Check if the event overlaps with the selected week
+    return (
+      (eventStart.isSameOrAfter(selectedWeek.start) && eventStart.isBefore(selectedWeek.end)) ||
+      (eventEnd.isSameOrAfter(selectedWeek.start) && eventEnd.isBefore(selectedWeek.end)) ||
+      (eventStart.isBefore(selectedWeek.start) && eventEnd.isAfter(selectedWeek.end))
+    );
+  }
+  
+  // Function to display events in the table
+  function displayEventsInTable(events) {
+    const eventsBody = document.getElementById('events-body');
+    eventsBody.innerHTML = ''; // Clear previous events
+  
+    // Populate the table with events
+    events.forEach(event => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${event.title}</td>
+        <td>${event.description}</td>
+        <td>${event.start}</td>
+        <td>${event.end}</td>
+        <td>${event.location}</td>
+        <td><a href="${event.link}" target="_blank">Link</a></td>
+      `;
+      eventsBody.appendChild(row);
+    });
+  }
+  
   
   // Function to check if an event falls within the selected week
   function isEventInSelectedWeek(eventDate, selectedWeek) {
