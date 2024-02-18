@@ -90,26 +90,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = ''; // Clear existing content
   
-    // Group events by date
-    const eventsByDate = {};
+    // Group events by week
+    const eventsByWeek = {};
     events.forEach(event => {
-      const dateKey = event.startTime.split(',')[0]; // Extracting the date part
-      if (!eventsByDate[dateKey]) {
-        eventsByDate[dateKey] = [];
+      const startOfWeek = getStartOfWeek(event.startTime);
+      if (!eventsByWeek[startOfWeek]) {
+        eventsByWeek[startOfWeek] = [];
       }
-      eventsByDate[dateKey].push(event);
+      eventsByWeek[startOfWeek].push(event);
     });
   
     // Display events in the table
-    for (const dateKey in eventsByDate) {
-      const eventsForDate = eventsByDate[dateKey];
+    for (const startOfWeek in eventsByWeek) {
+      const eventsForWeek = eventsByWeek[startOfWeek];
+      const endOfWeek = getEndOfWeek(startOfWeek);
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td colspan="5"><strong>${dateKey}</strong></td>
+        <td colspan="5"><strong>${startOfWeek} - ${endOfWeek}</strong></td>
       `;
       eventsBody.appendChild(row);
   
-      eventsForDate.forEach(event => {
+      eventsForWeek.forEach(event => {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${event.title}</td>
@@ -121,6 +122,19 @@ document.addEventListener('DOMContentLoaded', function () {
         eventsBody.appendChild(row);
       });
     }
-  }  
+  }
+  
+  function getStartOfWeek(dateString) {
+    const date = new Date(dateString);
+    const firstDayOfWeek = new Date(date.setDate(date.getDate() - date.getDay()));
+    return firstDayOfWeek.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
+  }
+  
+  function getEndOfWeek(startOfWeek) {
+    const startDate = new Date(startOfWeek);
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
+    return endDate.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
+  }   
   }
   
