@@ -1,48 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize FullCalendar
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        // Add FullCalendar options here
+        // ...
+
+        // Add the 'events' option to dynamically load events
+        events: fetchEvents,
+    });
+
     // Populate week options when the page loads
     populateWeekOptions();
-  
+
     // Fetch events when the "Fetch Events" button is clicked
-    document.getElementById('fetch-events-button').addEventListener('click', fetchEvents);
-  });
-  
-  function populateWeekOptions() {
-    const weekSelector = document.getElementById('week-selector');
-  
-    // Replace these with your actual start and end dates
-    const startDate = new Date('2024-01-01');
-    const endDate = new Date('2024-12-31');
-  
-    let currentDate = new Date(startDate);
-  
-    while (currentDate <= endDate) {
-      const formattedDate = getFormattedWeek(currentDate);
-      const option = document.createElement('option');
-      option.value = formattedDate;
-      option.textContent = formattedDate;
-      weekSelector.appendChild(option);
-  
-      // Move to the next week
-      currentDate.setDate(currentDate.getDate() + 7);
-    }
-  }
-  
-  function getFormattedWeek(date) {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `Week ${getISOWeek(date)}, ${year}`;
-  }
-  
-  function getISOWeek(date) {
-    const jan4 = new Date(date.getFullYear(), 0, 4);
-    const timeDiff = date - jan4;
-    const dayDiff = (timeDiff / (24 * 60 * 60 * 1000) + 1);
-    const weekNum = Math.ceil(dayDiff / 7);
-    return weekNum;
-  }
-  
-  function fetchEvents() {
+    document.getElementById('fetch-events-button').addEventListener('click', function () {
+        // Refetch events when the button is clicked
+        calendar.refetchEvents();
+    });
+
+    // Render FullCalendar
+    calendar.render();
+});
+
+function fetchEvents(info, successCallback, failureCallback) {
     const selectedWeek = document.getElementById('week-selector').value;
 
     // Convert selectedWeek to a format suitable for your RSS feed query
@@ -50,10 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Example RSS feed URL (replace with your actual RSS feed URL)
     const rssFeedUrl = 'https://cors-anywhere.herokuapp.com/https://experiencebu.brocku.ca/events.rss';
-
-    // Display a loading indicator
-    const eventsBody = document.getElementById('events-body');
-    eventsBody.innerHTML = '';
 
     fetch(rssFeedUrl)
         .then(response => response.text())
@@ -70,65 +46,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 return {
                     title: item.querySelector('title').textContent,
                     description: item.querySelector('description').textContent,
-                    startTime: new Date(startTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
-                    endTime: new Date(endTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
+                    start: new Date(startTime).toISOString(), // Adjust this based on your date format
+                    end: new Date(endTime).toISOString(), // Adjust this based on your date format
                     link: item.querySelector('link').textContent,
                 };
             });
 
-            // Filter events based on the selected week
-            const filteredEvents = events.filter(event => {
-                const eventStartWeek = getFormattedWeek(new Date(event.startTime));
-                return eventStartWeek === selectedWeek;
-            });
+            // Filter events for the selected week
+            const filteredEvents = events.filter(event => isEventInSelectedWeek(event, selectedWeek));
 
-            // Display events in the calendar
-            displayEventsInCalendar(filteredEvents);
+            // Call the successCallback with the filtered events
+            successCallback(filteredEvents);
         })
         .catch(error => {
             console.error('Error fetching RSS feed:', error);
-            // Display an error message to the user
-            eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
+            // Call the failureCallback with an error message
+            failureCallback('Error fetching events. Please try again later.');
         });
 }
 
-  
-  function displayEventsInCalendar(events) {
-    const eventsBody = document.getElementById('events-body');
-
-    // Group events by day
-    const eventsByDay = {};
-    events.forEach(event => {
-        const eventDate = new Date(event.startTime);
-        const dayKey = getFormattedDateKey(eventDate);
-        if (!eventsByDay[dayKey]) {
-            eventsByDay[dayKey] = [];
-        }
-        eventsByDay[dayKey].push(event);
-    });
-
-    // Fill in the calendar cells with events
-    const startDate = new Date('2024-01-01'); // Adjust this to your start date
-    const endDate = new Date('2024-12-31');   // Adjust this to your end date
-    let currentDate = new Date(startDate);
-
-    while (currentDate <= endDate) {
-        const dayKey = getFormattedDateKey(currentDate);
-        const cell = document.getElementById(dayKey);
-        if (cell) {
-            const eventsForDay = eventsByDay[dayKey] || [];
-            const eventsHTML = eventsForDay.map(event => `
-                <td>${event.title}</td>
-                <td>${event.description}</td>
-                <td>${event.startTime}</td>
-                <td>${event.endTime}</td>
-                <td><a href="${event.link}" target="_blank">Link</a></td>
-            `).join('</tr><tr>');
-
-            cell.innerHTML = `<tr>${eventsHTML}</tr>`;
-        }
-
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
+function isEventInSelectedWeek(event, selectedWeek) {
+    // Implement logic to check if the event is in the selected week
+    // Compare the event's start date with the start date of the selected week
+    // You may need to parse dates and compare them accordingly
+    return true; // Replace with your logic
 }
-  
