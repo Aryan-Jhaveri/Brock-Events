@@ -88,21 +88,40 @@ document.addEventListener('DOMContentLoaded', function () {
   
   function displayEventsInCalendar(events) {
     const eventsBody = document.getElementById('events-body');
-  
-    // Display logic for events goes here
-    eventsBody.innerHTML = ''; // Clear existing content
-  
-    // Display events in the table
+
+    // Group events by day
+    const eventsByDay = {};
     events.forEach(event => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${event.title}</td>
-        <td>${event.description}</td>
-        <td>${event.startTime}</td>
-        <td>${event.endTime}</td>
-        <td><a href="${event.link}" target="_blank">Link</a></td>
-      `;
-      eventsBody.appendChild(row);
+        const eventDate = new Date(event.startTime);
+        const dayKey = getFormattedDateKey(eventDate);
+        if (!eventsByDay[dayKey]) {
+            eventsByDay[dayKey] = [];
+        }
+        eventsByDay[dayKey].push(event);
     });
-  }
+
+    // Fill in the calendar cells with events
+    const startDate = new Date('2024-01-01'); // Adjust this to your start date
+    const endDate = new Date('2024-12-31');   // Adjust this to your end date
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+        const dayKey = getFormattedDateKey(currentDate);
+        const cell = document.getElementById(dayKey);
+        if (cell) {
+            const eventsForDay = eventsByDay[dayKey] || [];
+            const eventsHTML = eventsForDay.map(event => `
+                <td>${event.title}</td>
+                <td>${event.description}</td>
+                <td>${event.startTime}</td>
+                <td>${event.endTime}</td>
+                <td><a href="${event.link}" target="_blank">Link</a></td>
+            `).join('</tr><tr>');
+
+            cell.innerHTML = `<tr>${eventsHTML}</tr>`;
+        }
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+}
   
