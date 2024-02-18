@@ -12,12 +12,14 @@
   <h1>Event Calendar</h1>
 
   <div id="calendar">
-    <label for="week-selector">Select a week:</label>
-    <select id="week-selector">
-      <!-- Include options for weeks as needed -->
-      <option value="Week01-2024">Week 01, 2024</option>
-    </select>
-    <button id="fetch-events-button">Fetch Events</button>
+    <div id="week-selector-container">
+      <label for="week-selector">Select a week:</label>
+      <select id="week-selector">
+        <!-- Include options for weeks as needed -->
+        <option value="Week01-2024">Week 01, 2024</option>
+      </select>
+      <button id="fetch-events-button">Fetch Events</button>
+    </div>
 
     <table>
       <thead>
@@ -35,7 +37,7 @@
         <!-- Weeks will be displayed here -->
       </tbody>
     </table>
-  </div>
+</div>
 
   <script defer src="script.js"></script> <!-- Include the JavaScript file -->
 </body>
