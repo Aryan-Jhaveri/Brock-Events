@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error fetching RSS feed:', error);
       }
     });
-  }
+  }  
   
   function parseRSS(xml) {
     const events = [];
@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   
     return events;
+  }
+  eturn events;
   }
   
   
