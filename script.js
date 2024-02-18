@@ -119,24 +119,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xml, 'text/xml');
     const items = xmlDoc.querySelectorAll('item');
-
+  
     items.forEach(item => {
-      const startString = item.querySelector('start').textContent;
-      const endString = item.querySelector('end').textContent;
-
+      const startString = item.querySelector('start').textContent; // Change to 'start'
+      const endString = item.querySelector('end').textContent; // Change to 'end'
+  
       // Parse the start and end dates
       const startDate = new Date(startString);
       const endDate = new Date(endString);
-
+  
       // Format dates as YYYY-MM-DD for comparison
       const formattedStartDate = formatDate(startDate);
       const formattedEndDate = formatDate(endDate);
-
+  
       // Check if this week is already in the list
       const existingWeek = weeks.find(week =>
         week.startDate === formattedStartDate && week.endDate === formattedEndDate
       );
-
+  
       if (!existingWeek) {
         // New week found, add to the list
         weeks.push({
@@ -147,10 +147,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       }
     });
-
+  
     console.log('All Weeks:', weeks); // Log all extracted weeks
-
+  
     return weeks;
   }
+  
 
 );
