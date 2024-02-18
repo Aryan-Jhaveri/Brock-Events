@@ -150,5 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         console.error('Events body not found.');
     }
+  }
 }
 }
