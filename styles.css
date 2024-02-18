@@ -1,25 +1,26 @@
-body {
-    font-family: Arial, sans-serif;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 50px auto;
+#calendar {
+    max-width: 600px;
+    margin: 0 auto;
   }
   
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   th, td {
+    padding: 10px;
+    text-align: center;
     border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
   }
   
   th {
     background-color: #f2f2f2;
+  }
+  
+  #events-body td[colspan="7"] {
+    text-align: left;
+    font-weight: bold;
   }
   

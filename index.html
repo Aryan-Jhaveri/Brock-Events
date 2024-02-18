@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Calendar</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Include the CSS file -->
 </head>
+
 <body>
   <h1>Event Calendar</h1>
 
-  <label for="week-selector">Select a week:</label>
-  <select id="week-selector"></select>
-  <button onclick="fetchEvents()">Fetch Events</button>
+  <div id="calendar">
+    <label for="week-selector">Select a week:</label>
+    <select id="week-selector">
+      <!-- Include options for weeks as needed -->
+      <option value="Week01-2024">Week 01, 2024</option>
+    </select>
+    <button id="fetch-events-button">Fetch Events</button>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Start Time (EST)</th>
-        <th>End Time (EST)</th>
-        <th>Link</th>
-      </tr>
-    </thead>
-    <tbody id="events-body">
-      <!-- Events will be displayed here -->
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Sun</th>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thu</th>
+          <th>Fri</th>
+          <th>Sat</th>
+        </tr>
+      </thead>
+      <tbody id="events-body">
+        <!-- Weeks will be displayed here -->
+      </tbody>
+    </table>
+  </div>
 
-  <script defer src="script.js"></script>
+  <script defer src="script.js"></script> <!-- Include the JavaScript file -->
 </body>
+
 </html>
