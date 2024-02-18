@@ -55,12 +55,16 @@ function populateWeekSelector(selector) {
         option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
         selector.appendChild(option);
       });
+
+      // Log the selected value after options are added
+      console.log('Selected Week After Population:', selector.value);
     },
     error: function (error) {
       console.error('Error fetching RSS feed:', error);
     }
   });
 }
+
 
 
 function parseRSS(xml) {
@@ -141,6 +145,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedWeek = weekSelector.value;
     console.log('Selected Week:', selectedWeek);
   
+    // Check if a week is selected
+    if (!selectedWeek) {
+      console.warn('No week selected. Please choose a week.');
+      return;
+    }
+  
     const [startDate, endDate] = selectedWeek.split('-');
     console.log('Start Date:', startDate);
     console.log('End Date:', endDate);
@@ -163,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+  
   
 
   function isEventInSelectedWeek(event, startDate, endDate) {
