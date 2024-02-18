@@ -151,4 +151,3 @@ function displayEventsInTable(events) {
         console.error('Events body not found.');
     }
 }
-
