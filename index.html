@@ -5,23 +5,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Calendar</title>
-
-  <!-- Include jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Include FullCalendar CSS and JS -->
+  <!-- Include necessary CSS and JavaScript libraries -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-
-  <!-- Include your script.js file -->
+  <!-- Include your custom script -->
   <script defer src="script.js"></script>
 </head>
 
 <body>
   <h1>Event Calendar</h1>
 
-  <div id="calendar"></div>
+  <!-- Calendar Selector -->
+  <div id="calendar-selector">
+    <label for="week-selector">Select a week:</label>
+    <div id="week-calendar"></div>
+    <button id="fetch-events-button">Fetch Events</button>
+  </div>
+
+  <!-- Events Table -->
+  <table id="events-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody id="events-body"></tbody>
+  </table>
 </body>
 
 </html>
