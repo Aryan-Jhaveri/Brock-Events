@@ -44,47 +44,54 @@ document.addEventListener('DOMContentLoaded', function () {
   
   function fetchEvents() {
     const selectedWeek = document.getElementById('week-selector').value;
-  
+
     // Convert selectedWeek to a format suitable for your RSS feed query
     // You might need to parse the input or use a date library
-  
+
     // Example RSS feed URL (replace with your actual RSS feed URL)
     const rssFeedUrl = 'https://cors-anywhere.herokuapp.com/https://experiencebu.brocku.ca/events.rss';
-  
+
     // Display a loading indicator
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = '';
-  
+
     fetch(rssFeedUrl)
-      .then(response => response.text())
-      .then(data => {
-        // Parse XML data from the fetched text
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data, 'text/xml');
-  
-        // Extract relevant information from the feed's items
-        const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
-          const startTime = item.querySelector('start').textContent;
-          const endTime = item.querySelector('end').textContent;
-  
-          return {
-            title: item.querySelector('title').textContent,
-            description: item.querySelector('description').textContent,
-            startTime: new Date(startTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
-            endTime: new Date(endTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
-            link: item.querySelector('link').textContent,
-          };
+        .then(response => response.text())
+        .then(data => {
+            // Parse XML data from the fetched text
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data, 'text/xml');
+
+            // Extract relevant information from the feed's items
+            const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
+                const startTime = item.querySelector('start').textContent;
+                const endTime = item.querySelector('end').textContent;
+
+                return {
+                    title: item.querySelector('title').textContent,
+                    description: item.querySelector('description').textContent,
+                    startTime: new Date(startTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
+                    endTime: new Date(endTime).toLocaleString('en-US', { timeZone: 'America/New_York' }),
+                    link: item.querySelector('link').textContent,
+                };
+            });
+
+            // Filter events based on the selected week
+            const filteredEvents = events.filter(event => {
+                const eventStartWeek = getFormattedWeek(new Date(event.startTime));
+                return eventStartWeek === selectedWeek;
+            });
+
+            // Display events in the calendar
+            displayEventsInCalendar(filteredEvents);
+        })
+        .catch(error => {
+            console.error('Error fetching RSS feed:', error);
+            // Display an error message to the user
+            eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
         });
-  
-        // Display events in the calendar
-        displayEventsInCalendar(events);
-      })
-      .catch(error => {
-        console.error('Error fetching RSS feed:', error);
-        // Display an error message to the user
-        eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
-      });
-  }
+}
+
   
   function displayEventsInCalendar(events) {
     const eventsBody = document.getElementById('events-body');
