@@ -99,6 +99,7 @@ function fetchAndDisplayEvents(selectedWeek) {
   });
 }
 
+
 function displayEventsInTable(events) {
   const eventsBody = document.getElementById('events-body');
   if (eventsBody) {
@@ -111,8 +112,8 @@ function displayEventsInTable(events) {
       row.innerHTML = `
         <td>${event.title}</td>
         <td>${event.description}</td>
-        <td>${event.start}</td>
-        <td>${event.end}</td>
+        <td>${formatDateTime(event.start)}</td>
+        <td>${formatDateTime(event.end)}</td>
         <td><a href="${event.link}" target="_blank">Link</a></td>
       `;
       eventsBody.appendChild(row);
@@ -122,9 +123,17 @@ function displayEventsInTable(events) {
   }
 }
 
+// Add a function to format date and time
+function formatDateTime(dateTime) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZoneName: 'short' };
+  return new Intl.DateTimeFormat('en-US', options).format(dateTime);
+}
+
+//
+// ... (previous code)
+
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
-  const weekSelector = document.getElementById('week-selector');
   const datePicker = flatpickr('#datepicker', {
     mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
@@ -143,20 +152,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  if (fetchButton && weekSelector) {
+  if (fetchButton && datePicker) {
     fetchButton.addEventListener('click', function () {
-      const selectedWeek = weekSelector.value;
-      if (selectedWeek) {
+      const selectedDates = datePicker.selectedDates;
+      if (selectedDates.length === 2) {
+        const formattedStartDate = formatDate(selectedDates[0]);
+        const formattedEndDate = formatDate(selectedDates[1]);
+        const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
         console.log('Selected Week:', selectedWeek);
         fetchAndDisplayEvents(selectedWeek);
       } else {
         console.warn('No week selected. Please choose a week.');
       }
     });
-
-    // Populate the week selector with dynamically generated options
-    populateWeekSelector(weekSelector);
   } else {
-    console.error('Fetch button or week selector not found.');
+    console.error('Fetch button or datepicker not found.');
   }
 });
