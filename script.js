@@ -87,20 +87,40 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   function displayEvents(events) {
-    // Display logic for events goes here
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = ''; // Clear existing content
   
+    // Group events by date
+    const eventsByDate = {};
     events.forEach(event => {
+      const dateKey = event.startTime.split(',')[0]; // Extracting the date part
+      if (!eventsByDate[dateKey]) {
+        eventsByDate[dateKey] = [];
+      }
+      eventsByDate[dateKey].push(event);
+    });
+  
+    // Display events in the table
+    for (const dateKey in eventsByDate) {
+      const eventsForDate = eventsByDate[dateKey];
       const row = document.createElement('tr');
       row.innerHTML = `
-      <td>${event.title}</td>
-      <td>${event.description}</td>
-      <td>${event.startTime}</td>
-      <td>${event.endTime}</td>
-      <td><a href="${event.link}" target="_blank">Link</a></td>
-    `;    
+        <td colspan="5"><strong>${dateKey}</strong></td>
+      `;
       eventsBody.appendChild(row);
-    });
+  
+      eventsForDate.forEach(event => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${event.title}</td>
+          <td>${event.description}</td>
+          <td>${event.startTime}</td>
+          <td>${event.endTime}</td>
+          <td><a href="${event.link}" target="_blank">Link</a></td>
+        `;
+        eventsBody.appendChild(row);
+      });
+    }
+  }  
   }
   
