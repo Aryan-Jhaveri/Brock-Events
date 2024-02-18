@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Fetch events when the page loads
-    fetchEvents();
+    // Initialize FullCalendar
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,basicWeek,basicDay'
+      },
+      defaultDate: '2024-01-01', // Set to your default date
+      navLinks: true,
+      editable: false,
+      eventLimit: true,
+      events: fetchEvents(), // Call fetchEvents to get events
+      dayClick: function (date, jsEvent, view) {
+        // Handle day click (selected week)
+        const selectedWeek = getWeekNumber(date);
+        console.log('Selected Week:', selectedWeek);
+      },
+    });
   });
   
   function fetchEvents() {
@@ -19,18 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
       // Add more events as needed
     ];
   
-    // Initialize FullCalendar
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'month,basicWeek,basicDay'
-      },
-      defaultDate: '2024-01-01', // Set to your default date
-      navLinks: true,
-      editable: false,
-      eventLimit: true,
-      events: events
-    });
+    return events;
+  }
+  
+  function getWeekNumber(date) {
+    const startDate = new Date(date);
+    startDate.setHours(0, 0, 0, 0);
+    const firstDayOfYear = new Date(startDate.getFullYear(), 0, 1);
+    const days = Math.round((startDate - firstDayOfYear) / 86400000);
+    const weekNumber = Math.ceil((days + firstDayOfYear.getDay() + 1) / 7);
+    return weekNumber;
   }
   
