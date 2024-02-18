@@ -31,12 +31,12 @@ function fetchEvents(start, end, timezone, callback) {
   ];
 
   // Callback with the events
-  callback(events);
+  callback(eventsForWeek);
 }
 
   
   
-  function displayEventsInTable(events) {
+function displayEventsInTable(events) {
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = ''; // Clear previous events
   
@@ -45,10 +45,10 @@ function fetchEvents(start, end, timezone, callback) {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${event.title}</td>
-        <td>${event.description}</td>
-        <td>${event.startTime}</td>
-        <td>${event.endTime}</td>
-        <td><a href="${event.link}" target="_blank">Link</a></td>
+        <td>${event.description || ''}</td>
+        <td>${event.start}</td>
+        <td>${event.end}</td>
+        <td><a href="${event.link || '#'}" target="_blank">Link</a></td>
       `;
       eventsBody.appendChild(row);
     });
