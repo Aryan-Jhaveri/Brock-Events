@@ -9,8 +9,8 @@ function extractWeeks(xml) {
     const endString = item.querySelector('end').textContent;
 
     // Parse the start and end dates using the provided date format
-    const startDate = new Date(startString.replace(/ GMT$/, ''));
-    const endDate = new Date(endString.replace(/ GMT$/, ''));
+    const startDate = new Date(startString);
+    const endDate = new Date(endString);
 
     // Format dates as YYYY-MM-DD for comparison
     const formattedStartDate = formatDate(startDate);
@@ -64,8 +64,6 @@ function populateWeekSelector(selector) {
     }
   });
 }
-
-
 
 function parseRSS(xml) {
   const events = [];
