@@ -8,9 +8,6 @@
   <!-- Include jQuery, moment.js, and FullCalendar -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-  <!-- Include FullCalendar (if needed) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
   <!-- Include your custom script.js -->
   <script defer src="script.js"></script>
 </head>
@@ -19,7 +16,7 @@
   <h1>Event Calendar</h1>
 
   <!-- Add a button to fetch events -->
-  <button onclick="fetchAndDisplayEvents()">Fetch Events</button>
+  <button id="fetch-button">Fetch Events</button>
 
   <!-- Table to display events -->
   <table id="events-table">
