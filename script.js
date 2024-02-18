@@ -104,22 +104,25 @@ document.addEventListener('DOMContentLoaded', function () {
     for (const startOfWeek in eventsByWeek) {
       const eventsForWeek = eventsByWeek[startOfWeek];
       const endOfWeek = getEndOfWeek(startOfWeek);
-      const row = document.createElement('tr');
-      row.innerHTML = `
+  
+      // Create a row for the week
+      const weekRow = document.createElement('tr');
+      weekRow.innerHTML = `
         <td colspan="5"><strong>${startOfWeek} - ${endOfWeek}</strong></td>
       `;
-      eventsBody.appendChild(row);
+      eventsBody.appendChild(weekRow);
   
+      // Create rows for each event in the week
       eventsForWeek.forEach(event => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        const eventRow = document.createElement('tr');
+        eventRow.innerHTML = `
           <td>${event.title}</td>
           <td>${event.description}</td>
           <td>${event.startTime}</td>
           <td>${event.endTime}</td>
           <td><a href="${event.link}" target="_blank">Link</a></td>
         `;
-        eventsBody.appendChild(row);
+        eventsBody.appendChild(eventRow);
       });
     }
   }
@@ -135,6 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6);
     return endDate.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
-  }   
   }
+  
   
