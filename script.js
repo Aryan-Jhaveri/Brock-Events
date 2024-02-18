@@ -82,43 +82,27 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => {
         console.error('Error fetching RSS feed:', error);
         // Display an error message to the user
-        eventsBody.innerHTML = '<tr><td colspan="7">Error fetching events. Please try again later.</td></tr>';
+        eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
       });
   }
   
   function displayEventsInCalendar(events) {
     const eventsBody = document.getElementById('events-body');
   
-    // Group events by day
-    const eventsByDay = {};
+    // Display logic for events goes here
+    eventsBody.innerHTML = ''; // Clear existing content
+  
+    // Display events in the table
     events.forEach(event => {
-      const eventDate = new Date(event.startTime);
-      const dayKey = getFormattedDateKey(eventDate);
-      if (!eventsByDay[dayKey]) {
-        eventsByDay[dayKey] = [];
-      }
-      eventsByDay[dayKey].push(event);
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${event.title}</td>
+        <td>${event.description}</td>
+        <td>${event.startTime}</td>
+        <td>${event.endTime}</td>
+        <td><a href="${event.link}" target="_blank">Link</a></td>
+      `;
+      eventsBody.appendChild(row);
     });
-  
-    // Fill in the calendar cells with events
-    const startDate = new Date('2024-01-01'); // Adjust this to your start date
-    const endDate = new Date('2024-12-31');   // Adjust this to your end date
-    let currentDate = new Date(startDate);
-  
-    while (currentDate <= endDate) {
-      const dayKey = getFormattedDateKey(currentDate);
-      const cell = document.getElementById(dayKey);
-      if (cell) {
-        const eventsForDay = eventsByDay[dayKey] || [];
-        const eventsHTML = eventsForDay.map(event => `
-          <strong>${event.title}</strong><br>
-          ${event.startTime} - ${event.endTime}<br>
-          <a href="${event.link}" target="_blank">Link</a>
-        `).join('<br><br>');
-        cell.innerHTML = eventsHTML;
-      }
-  
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
   }
   
