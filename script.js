@@ -108,9 +108,19 @@ function displayEventsInTable(events) {
     // Populate the table with events
     events.forEach(event => {
       const row = document.createElement('tr');
-      row
-
-
+      row.innerHTML = `
+        <td>${event.title}</td>
+        <td>${event.description}</td>
+        <td>${event.start}</td>
+        <td>${event.end}</td>
+        <td><a href="${event.link}" target="_blank">Link</a></td>
+      `;
+      eventsBody.appendChild(row);
+    });
+  } else {
+    console.error('Events body not found.');
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
