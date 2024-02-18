@@ -69,6 +69,12 @@ function populateWeekSelector(selector) {
 }
 
 function fetchAndDisplayEvents() {
+  // Check if weekSelector is not defined
+  if (!weekSelector) {
+    console.error('weekSelector is not defined.');
+    return;
+  }
+
   const selectedWeek = weekSelector.value;
   console.log('Selected Week:', selectedWeek);
 
