@@ -107,7 +107,7 @@ function populateWeekSelector(selector) {
         option.value = `${week.startDate}-${week.endDate}`;
         option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
         selector.appendChild(option);
-      });      
+      });
     },
     error: function (error) {
       console.error('Error fetching RSS feed:', error);
