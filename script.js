@@ -68,6 +68,7 @@ function populateWeekSelector(selector) {
   });
 }
 
+
 function fetchAndDisplayEvents() {
   // Check if weekSelector is not defined
   if (!weekSelector) {
