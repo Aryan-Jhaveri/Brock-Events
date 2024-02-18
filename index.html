@@ -172,9 +172,9 @@ function displayEventsInTable(events) {
 
 
 // Add a function to format date and time
-function formatDateTime(dateTime) {
-  const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZoneName: 'short' };
-  return new Intl.DateTimeFormat('en-US', options).format(dateTime);
+function formatDate(date) {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
 // ... (rest of your code)
@@ -188,24 +188,22 @@ document.addEventListener('DOMContentLoaded', function () {
     mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
     onClose: function (selectedDates) {
-      const startDate = selectedDates[0];
-      const endDate = selectedDates[1];
-      if (selectedDates && selectedDates.length === 2) {
-  const formattedStartDate = formatDate(selectedDates[0]);
-  const formattedEndDate = formatDate(selectedDates[1]);
-  const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
-  console.log('Selected Week:', selectedWeek);
-  fetchAndDisplayEvents(selectedWeek);
-} else {
-  console.warn('No week selected. Please choose a week.');
+  const startDate = selectedDates[0];
+  const endDate = selectedDates[1];
+  if (startDate && endDate) {
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
+    console.log('Selected Week:', selectedWeek);
+    fetchAndDisplayEvents(selectedWeek);
+  } else {
+    console.warn('No week selected. Please choose a week.');
+  }
 }
+
 
     }
   });
-  function formatDate(date) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  return new Intl.DateTimeFormat('en-US', options).format(date);
-}
 
   if (fetchButton && datePicker) {
     fetchButton.addEventListener('click', function () {
