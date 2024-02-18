@@ -5,13 +5,13 @@ function fetchEvents() {
     // You might need to parse the input or use a date library
   
     // Example RSS feed URL (replace with your actual RSS feed URL)
-    const rssFeedUrl = 'https://experiencebu.brocku.ca/events.rss';
+    const rssFeedUrl = 'https://cors-anywhere.herokuapp.com/https://experiencebu.brocku.ca/events.rss';
   
     // Display a loading indicator
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
   
-    fetch(rssFeedUrl, { mode: 'cors' })
+    fetch(rssFeedUrl)
       .then(response => response.text())
       .then(data => {
         // Parse XML data from the fetched text
@@ -40,5 +40,4 @@ function fetchEvents() {
         // Display an error message to the user
         eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
       });
-  }
-  
+}
