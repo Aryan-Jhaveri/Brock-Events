@@ -12,26 +12,54 @@ document.addEventListener('DOMContentLoaded', function () {
       eventLimit: true,
       events: fetchEvents
     });
-  
-    // Define fetchEvents function
-    function fetchEvents(start, end, timezone, callback) {
-        const events = [
-          {
-            title: 'Event 1',
-            start: '2024-01-01',
-            end: '2024-01-03'
-          },
-          {
-            title: 'Event 2',
-            start: '2024-01-05',
-            end: '2024-01-07'
-          },
-          // Add more events as needed
-        ];
-      
-        callback(events);
-      }      
   });
+  
+  function fetchEvents(start, end, timezone, callback) {
+    // Make an AJAX request to the RSS feed
+    $.ajax({
+      url: 'https://experiencebu.brocku.ca/events.rss',
+      method: 'GET',
+      dataType: 'xml',
+      success: function (data) {
+        // Parse the RSS feed and extract events
+        const events = parseRSS(data);
+        // Callback with the events
+        callback(events);
+      },
+      error: function (error) {
+        console.error('Error fetching RSS feed:', error);
+      }
+    });
+  }
+  
+  function parseRSS(xml) {
+    const events = [];
+  
+    // Use jQuery to parse XML
+    $(xml).find('item').each(function () {
+      const title = $(this).find('title').text();
+      const description = $(this).find('description').text();
+      const link = $(this).find('link').text();
+      const pubDate = $(this).find('pubDate').text();
+  
+      // Convert pubDate to a valid start date (modify as needed)
+      const startDate = moment(pubDate).format('YYYY-MM-DD');
+  
+      // For simplicity, set the end date to be the same as the start date
+      const endDate = startDate;
+  
+      events.push({
+        title: title,
+        description: description,
+        start: startDate,
+        end: endDate,
+        link: link
+      });
+    });
+  
+    return events;
+  }
+  
   
   
   
