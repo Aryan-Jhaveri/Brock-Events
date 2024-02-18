@@ -5,39 +5,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Calendar</title>
-  <!-- Include jQuery, moment.js, FullCalendar, and your script.js -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include jQuery, moment.js, and FullCalendar -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+  <!-- Include your custom script.js -->
   <script defer src="script.js"></script>
 </head>
-
 
 <body>
   <h1>Event Calendar</h1>
 
-  <label for="week-selector">Select a week:</label>
-  <select id="week-selector">
-    <!-- Include options for weeks as needed -->
-    <option value="Week01-2024">Week 01, 2024</option>
-    <!-- Add more options as needed -->
-  </select>
-  <button id="fetch-events-button">Fetch Events</button>
+  <!-- Add a button to fetch events -->
+  <button onclick="fetchAndDisplayEvents()">Fetch Events</button>
 
+  <!-- Table to display events -->
   <table id="events-table">
     <thead>
       <tr>
         <th>Title</th>
         <th>Description</th>
-        <th>Start</th>
-        <th>End</th>
+        <th>Start Time</th>
+        <th>End Time</th>
         <th>Link</th>
       </tr>
     </thead>
     <tbody id="events-body">
-      <!-- Events will be displayed here -->
+      <!-- Events will be dynamically added here -->
     </tbody>
   </table>
-</body>
 
+  <script>
+    function fetchAndDisplayEvents() {
+      // Fetch events and display them in the table
+      fetchEvents();
+    }
+
+    function displayEventsInTable(events) {
+      const eventsBody = document.getElementById('events-body');
+      eventsBody.innerHTML = ''; // Clear previous events
+
+      // Populate the table with events from the selected week
+      events.forEach(event => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${event.title}</td>
+          <td>${event.description}</td>
+          <td>${event.start}</td>
+          <td>${event.end}</td>
+          <td><a href="${event.link}" target="_blank">Link</a></td>
+        `;
+        eventsBody.appendChild(row);
+      });
+    }
+  </script>
+</body>
 </html>
