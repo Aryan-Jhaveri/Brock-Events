@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Add event listener to the "Fetch Events" button
-    const fetchButton = document.querySelector('button[data-action="fetch-events"]');
-    fetchButton.addEventListener('click', fetchAndDisplayEvents);
+    const fetchButton = document.getElementById('fetch-button');
+    if (fetchButton) {
+      fetchButton.addEventListener('click', fetchAndDisplayEvents);
+    } else {
+      console.error('Fetch button not found.');
+    }
   
     function fetchAndDisplayEvents() {
       // Make an AJAX request to the RSS feed
@@ -53,20 +57,24 @@ document.addEventListener('DOMContentLoaded', function () {
   
     function displayEventsInTable(events) {
       const eventsBody = document.getElementById('events-body');
-      eventsBody.innerHTML = ''; // Clear previous events
+      if (eventsBody) {
+        eventsBody.innerHTML = ''; // Clear previous events
   
-      // Populate the table with events
-      events.forEach(event => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${event.title}</td>
-          <td>${event.description}</td>
-          <td>${event.start}</td>
-          <td>${event.end}</td>
-          <td><a href="${event.link}" target="_blank">Link</a></td>
-        `;
-        eventsBody.appendChild(row);
-      });
+        // Populate the table with events
+        events.forEach(event => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${event.title}</td>
+            <td>${event.description}</td>
+            <td>${event.start}</td>
+            <td>${event.end}</td>
+            <td><a href="${event.link}" target="_blank">Link</a></td>
+          `;
+          eventsBody.appendChild(row);
+        });
+      } else {
+        console.error('Events body not found.');
+      }
     }
   });
   
