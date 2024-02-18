@@ -188,5 +188,55 @@ document.addEventListener('DOMContentLoaded', function () {
     );
   }
 
+  const fetchButton = document.getElementById('fetch-button');
+  const weekSelector = document.getElementById('week-selector');
+
+  if (fetchButton && weekSelector) {
+    fetchButton.addEventListener('click', fetchAndDisplayEvents);
+    // Populate the week selector with dynamically generated options
+    populateWeekSelector(weekSelector);
+  } else {
+    console.error('Fetch button or week selector not found.');
+  }
+
+  function fetchAndDisplayEvents() {
+    const selectedWeek = weekSelector.value;
+    console.log('Selected Week:', selectedWeek);
+  
+    const [startDate, endDate] = selectedWeek.split('-');
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+  
+    // Make an AJAX request to the RSS feed for the selected week
+    $.ajax({
+      url: `https://experiencebu.brocku.ca/events.rss?week=${selectedWeek}`,
+      method: 'GET',
+      dataType: 'xml',
+      success: function (data) {
+        // Parse the RSS feed and extract events
+        const events = parseRSS(data);
+        console.log('Parsed Events:', events);
+  
+        // Display events in the table
+        displayEventsInTable(events);
+      },
+      error: function (error) {
+        console.error('Error fetching RSS feed:', error);
+      }
+    });
+  }
+  
+
+  function isEventInSelectedWeek(event, startDate, endDate) {
+    // Parse the start and end dates of the event
+    const eventStartDate = new Date(event.start);
+    const eventEndDate = new Date(event.end);
+
+    // Check if the event falls within the selected week
+    return (
+      eventStartDate >= new Date(startDate) &&
+      eventEndDate <= new Date(endDate)
+    );
+  }
 
 )}
