@@ -64,7 +64,7 @@
       eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
 
       // Use a different CORS proxy
-      const proxyUrl = 'https://allorigins.win/get?url=';
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';;
       const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
 
       fetch(fetchUrl)
