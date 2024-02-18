@@ -130,16 +130,19 @@ if (!selectedWeek) {
     }
   });
 }
-
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
-  // Assign the value to weekSelector here
-  weekSelector = document.getElementById('week-selector');
+  const weekSelector = document.getElementById('week-selector');
 
   if (fetchButton && weekSelector) {
     fetchButton.addEventListener('click', fetchAndDisplayEvents);
-    // Populate the week selector with dynamically generated options
-    populateWeekSelector(weekSelector);
+
+    // Check if the week selector has options before populating
+    if (weekSelector.options.length === 0) {
+      // Populate the week selector with dynamically generated options
+      populateWeekSelector(weekSelector);
+    }
+
   } else {
     console.error('Fetch button or week selector not found.');
   }
