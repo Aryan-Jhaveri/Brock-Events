@@ -153,5 +153,5 @@ document.addEventListener('DOMContentLoaded', function () {
     return weeks;
   }
   
-
-});
+}
+);
