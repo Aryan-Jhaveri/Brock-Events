@@ -119,5 +119,5 @@ document.addEventListener('DOMContentLoaded', function () {
       }
   
       // Move to the next day
-      currentDate.setDate(currentDate.getDate() + 
-  
+      currentDate.setDate(currentDate.getDate() + 1);
+    }    
