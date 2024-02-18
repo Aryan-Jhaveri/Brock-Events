@@ -63,16 +63,16 @@
       const eventsBody = document.getElementById('events-body');
       eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
   
-      // Use CORS Anywhere proxy
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      const fetchUrl = proxyUrl + rssFeedUrl;
+      // Use an alternative CORS proxy
+      const proxyUrl = 'https://api.allorigins.win/get?url=';
+      const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
   
       fetch(fetchUrl)
-        .then(response => response.text())
+        .then(response => response.json()) // Note: Use response.json() for the alternative proxy
         .then(data => {
           // Parse XML data from the fetched text
           const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(data, 'text/xml');
+          const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
   
           // Extract relevant information from the feed's items
           const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
@@ -97,6 +97,6 @@
           eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
         });
     }
-  </script>  
+  </script>    
 </body>
 </html>
