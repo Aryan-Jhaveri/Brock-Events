@@ -54,48 +54,47 @@
   </table>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-let weekSelector;
+  <script>
+  let weekSelector;
 
-function extractWeeks(xml) {
-  const weeks = [];
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xml, 'text/xml');
-  const items = xmlDoc.querySelectorAll('item');
-
-  items.forEach(item => {
-    const startString = item.querySelector('start').textContent;
-    const endString = item.querySelector('end').textContent;
-
-    // Parse the start and end dates using the provided date format
-    const startDate = new Date(startString);
-    const endDate = new Date(endString);
-
-    // Format dates as YYYY-MM-DD for comparison
-    const formattedStartDate = formatDate(startDate);
-    const formattedEndDate = formatDate(endDate);
-
-    // Check if this week is already in the list
-    const existingWeek = weeks.find(week =>
-      week.startDate === formattedStartDate && week.endDate === formattedEndDate
-    );
-
-    if (!existingWeek) {
-      // New week found, add to the list
-      weeks.push({
-        value: `${formattedStartDate}-${formattedEndDate}`,
-        label: `Week ${weeks.length + 1}`,
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      });
-    }
-  });
-
-  console.log('All Weeks:', weeks); // Log all extracted weeks
-
-  return weeks;
-}
-
+  function extractWeeks(xml) {
+    const weeks = [];
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xml, 'text/xml');
+    const items = xmlDoc.querySelectorAll('item');
+  
+    items.forEach(item => {
+      const startString = item.querySelector('start').textContent;
+      const endString = item.querySelector('end').textContent;
+  
+      // Parse the start and end dates using the provided date format
+      const startDate = new Date(startString);
+      const endDate = new Date(endString);
+  
+      // Format dates as YYYY-MM-DD for comparison
+      const formattedStartDate = formatDate(startDate);
+      const formattedEndDate = formatDate(endDate);
+  
+      // Check if this week is already in the list
+      const existingWeek = weeks.find(week =>
+        week.startDate === formattedStartDate && week.endDate === formattedEndDate
+      );
+  
+      if (!existingWeek) {
+        // New week found, add to the list
+        weeks.push({
+          value: `${formattedStartDate}-${formattedEndDate}`,
+          label: `Week ${weeks.length + 1}`,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        });
+      }
+    });
+  
+    console.log('All Weeks:', weeks); // Log all extracted weeks
+  
+    return weeks;
+  }
 function populateWeekSelector(selector) {
   // Make an AJAX request to the RSS feed to get all weeks
   $.ajax({
