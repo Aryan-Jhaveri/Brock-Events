@@ -2,15 +2,16 @@ function extractWeeks(xml) {
   const weeks = [];
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, 'text/xml');
-  const items = xmlDoc.querySelectorAll('item');
+  const items = xmlDoc.evaluate('//start[namespace-uri()="events"]', xmlDoc, null, XPathResult.ANY_TYPE, null);
 
-  items.forEach(item => {
-    const startElement = item.querySelector('start[xmlns="events"]');
-    const endElement = item.querySelector('end[xmlns="events"]');
+  let startNode = items.iterateNext();
 
-    if (startElement && endElement) {
-      const startString = startElement.textContent;
-      const endString = endElement.textContent;
+  while (startNode) {
+    const endNode = startNode.nextElementSibling;
+    
+    if (endNode && endNode.localName === 'end' && endNode.namespaceURI === 'events') {
+      const startString = startNode.textContent;
+      const endString = endNode.textContent;
 
       // Log the content of 'start' and 'end' elements
       console.log('Start:', startString);
@@ -39,7 +40,9 @@ function extractWeeks(xml) {
         });
       }
     }
-  });
+
+    startNode = items.iterateNext();
+  }
 
   console.log('All Weeks:', weeks); // Log all extracted weeks
 
@@ -69,6 +72,7 @@ function populateWeekSelector(selector) {
     }
   });
 }
+
 
 function parseRSS(xml) {
   const events = [];
@@ -133,33 +137,3 @@ function displayEventsInTable(events) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const fetchButton = document.getElementById('fetch-button');
-  const weekSelector = document.getElementById('week-selector');
-
-  if (fetchButton && weekSelector) {
-    fetchButton.addEventListener('click', fetchAndDisplayEvents);
-    // Populate the week selector with dynamically generated options
-    populateWeekSelector(weekSelector);
-  } else {
-    console.error('Fetch button or week selector not found.');
-  }
-
-  function fetchAndDisplayEvents() {
-    const selectedWeek = weekSelector.value;
-    // Make an AJAX request to the RSS feed for the selected week
-    $.ajax({
-      url: `https://experiencebu.brocku.ca/events.rss?week=${selectedWeek}`,
-      method: 'GET',
-      dataType: 'xml',
-      success: function (data) {
-        // Parse the RSS feed and extract events
-        const events = parseRSS(data);
-        // Display events in the table
-        displayEventsInTable(events);
-      },
-      error: function (error) {
-        console.error('Error fetching RSS feed:', error);
-      }
-    });
-  }
-}
