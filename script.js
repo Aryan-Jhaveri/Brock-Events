@@ -29,33 +29,36 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   
-  function parseRSS(xml) {
+  function parseRSS(xml, selectedWeek) {
     const events = [];
   
-    // Use jQuery to parse XML
-    $(xml).find('item').each(function () {
-      const title = $(this).find('title').text();
-      const description = $(this).find('description').text();
-      const link = $(this).find('link').text();
-      const pubDate = $(this).find('pubDate').text();
+    // Use DOMParser to parse XML
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xml, 'text/xml');
   
-      // Convert pubDate to a valid start date (modify as needed)
-      const startDate = moment(pubDate).format('YYYY-MM-DD');
+    // Iterate through each item in the XML
+    const items = xmlDoc.querySelectorAll('item');
+    items.forEach(item => {
+      const title = item.querySelector('title').textContent;
+      const description = item.querySelector('description').textContent;
+      const link = item.querySelector('link').textContent;
+      const start = item.querySelector('start').textContent;
+      const end = item.querySelector('end').textContent;
   
-      // For simplicity, set the end date to be the same as the start date
-      const endDate = startDate;
+      // You may need to further process start and end dates based on your needs
   
       events.push({
         title: title,
         description: description,
-        start: startDate,
-        end: endDate,
-        link: link
+        link: link,
+        start: start,
+        end: end,
       });
     });
   
     return events;
   }
+  
   
   function displayEventsInTable(events) {
     const eventsBody = document.getElementById('events-body');
