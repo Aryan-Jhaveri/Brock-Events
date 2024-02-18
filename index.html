@@ -47,21 +47,84 @@
   </table>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const fetchButton = document.getElementById('fetch-button');
-      if (fetchButton) {
-        fetchButton.addEventListener('click', fetchAndDisplayEvents);
-      } else {
-        console.error('Fetch button not found.');
-      }
+document.addEventListener('DOMContentLoaded', function () {
+  const fetchButton = document.getElementById('fetch-button');
+  const weekSelector = document.getElementById('week-selector');
 
-      const weekSelector = document.getElementById('week-selector');
-      if (weekSelector) {
-        // Populate the week selector with dynamically generated options
-        populateWeekSelector(weekSelector);
-      } else {
-        console.error('Week selector not found.');
+  if (fetchButton && weekSelector) {
+    fetchButton.addEventListener('click', fetchAndDisplayEvents);
+    // Populate the week selector with dynamically generated options
+    populateWeekSelector(weekSelector);
+  } else {
+    console.error('Fetch button or week selector not found.');
+  }
+
+  function fetchAndDisplayEvents() {
+    const selectedWeek = weekSelector.value;
+    // Make an AJAX request to the RSS feed for the selected week
+    $.ajax({
+      url: `https://experiencebu.brocku.ca/events.rss?week=${selectedWeek}`,
+      method: 'GET',
+      dataType: 'xml',
+      success: function (data) {
+        // Parse the RSS feed and extract events
+        const events = parseRSS(data);
+        // Display events in the table
+        displayEventsInTable(events);
+      },
+      error: function (error) {
+        console.error('Error fetching RSS feed:', error);
       }
+    });
+  }
+
+  function populateWeekSelector(selector) {
+    // Make an AJAX request to the RSS feed to get all weeks
+    $.ajax({
+      url: 'https://experiencebu.brocku.ca/events.rss',
+      method: 'GET',
+      dataType: 'xml',
+      success: function (data) {
+        // Parse the RSS feed and extract start and end dates of each week
+        const weeks = extractWeeks(data);
+        // Populate the week selector with dynamically generated options
+        weeks.forEach(week => {
+          const option = document.createElement('option');
+          option.value = week.value;
+          option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
+          selector.appendChild(option);
+        });
+      },
+      error: function (error) {
+        console.error('Error fetching RSS feed:', error);
+      }
+    });
+  }
+
+  function extractWeeks(xml) {
+    // Function to extract weeks from the RSS feed XML
+    // This logic might need to be adjusted based on the actual structure of your RSS feed
+    const weeks = [];
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xml, 'text/xml');
+    const items = xmlDoc.querySelectorAll('item');
+
+    // Iterate through items and extract start and end dates
+    items.forEach(item => {
+      const start = item.querySelector('start').textContent;
+      const end = item.querySelector('end').textContent;
+
+      // Check if this week is already in the list
+      const existingWeek = weeks.find(week => week.startDate === start && week.endDate === end);
+
+      if (!existingWeek) {
+        // New week found, add to the list
+        weeks.push({ value: `week${weeks.length + 1}`, label: `Week ${weeks.length + 1}`, startDate: start, endDate: end });
+      }
+    });
+
+    return weeks;
+  }
 
       function fetchAndDisplayEvents() {
   // Retrieve the selected week from the dropdown
