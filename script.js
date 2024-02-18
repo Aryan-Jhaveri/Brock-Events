@@ -94,12 +94,12 @@ document.addEventListener('DOMContentLoaded', function () {
     events.forEach(event => {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${event.title}</td>
-        <td>${event.description}</td>
-        <td>${event.startTime}</td>
-        <td>${event.endTime}</td>
-        <td><a href="${event.link}" target="_blank">Link</a></td>
-      `;
+      <td>${event.title}</td>
+      <td>${event.description}</td>
+      <td>${event.startTime}</td>
+      <td>${event.endTime}</td>
+      <td><a href="${event.link}" target="_blank">Link</a></td>
+    `;    
       eventsBody.appendChild(row);
     });
   }
