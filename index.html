@@ -170,8 +170,8 @@ function displayEventsInTable(events) {
       row.innerHTML = `
         <td>${event.title}</td>
         <td>${event.description}</td>
-        <td>${formatDateTime(event.start)}</td>
-        <td>${formatDateTime(event.end)}</td>
+        <td>${event.start}</td>
+        <td>${event.end}</td>
         <td><a href="${event.link}" target="_blank">Link</a></td>
       `;
       eventsBody.appendChild(row);
@@ -180,6 +180,7 @@ function displayEventsInTable(events) {
     console.error('Events body not found.');
   }
 }
+
 
 // Add a function to format date and time
 function formatDateTime(dateTime) {
