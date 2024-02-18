@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return events;
 }
 
-function displayEventsInTable(events) {
+  function displayEventsInTable(events) {
     const eventsBody = document.getElementById('events-body');
     if (eventsBody) {
         eventsBody.innerHTML = ''; // Clear previous events
