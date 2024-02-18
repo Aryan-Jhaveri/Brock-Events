@@ -68,15 +68,16 @@ document.addEventListener('DOMContentLoaded', function () {
     events.forEach(event => {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${event.querySelector('title').textContent}</td>
-        <td>${event.querySelector('description').textContent}</td>
-        <td>${event.querySelector('start').textContent}</td>
-        <td>${event.querySelector('end').textContent}</td>
-        <td><a href="${event.querySelector('link').textContent}" target="_blank">Link</a></td>
+        <td>${event.title}</td>
+        <td>${event.description}</td>
+        <td>${event.start}</td>
+        <td>${event.end}</td>
+        <td><a href="${event.link}" target="_blank">Link</a></td>
       `;
       eventsBody.appendChild(row);
     });
   }
+  
   
   
   
