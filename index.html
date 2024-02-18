@@ -22,11 +22,6 @@
 <!-- Add this inside the body of your HTML -->
 <input type="text" id="datepicker" placeholder="Select a week">
 
-<!-- Add a week selector dropdown -->
-<label for="week-selector">Select Week: </label>
-<select id="week-selector">
-  <!-- Options will be dynamically added here -->
-</select>
 
   <!-- Add a button to fetch events -->
   <button id="fetch-button">Fetch Events</button>
@@ -190,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// ... (rest of the code remains the same)
 
 function populateWeekSelector(datePicker) {
   // Make an AJAX request to the RSS feed to get all weeks
