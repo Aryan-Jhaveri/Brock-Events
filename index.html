@@ -172,28 +172,52 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       function extractWeeks(xml) {
-        const weeks = [];
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xml, 'text/xml');
-        const items = xmlDoc.querySelectorAll('item');
+  const weeks = [];
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xml, 'text/xml');
+  const items = xmlDoc.querySelectorAll('item');
 
-        let currentWeek = null;
+  items.forEach(item => {
+    const startString = item.querySelector('start').textContent;
+    const endString = item.querySelector('end').textContent;
 
-        items.forEach(item => {
-          const start = item.querySelector('start').textContent;
-          const end = item.querySelector('end').textContent;
+    // Parse the start and end dates
+    const startDate = new Date(startString);
+    const endDate = new Date(endString);
 
-          const itemWeek = { startDate: start, endDate: end };
+    // Format dates as YYYY-MM-DD for comparison
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
 
-          if (!currentWeek || itemWeek.startDate !== currentWeek.startDate || itemWeek.endDate !== currentWeek.endDate) {
-            // New week found
-            currentWeek = itemWeek;
-            weeks.push({ value: `week${weeks.length + 1}`, label: `Week ${weeks.length + 1}`, ...currentWeek });
-          }
-        });
+    // Check if this week is already in the list
+    const existingWeek = weeks.find(week =>
+      week.startDate === formattedStartDate && week.endDate === formattedEndDate
+    );
 
-        return weeks;
-      }
+    if (!existingWeek) {
+      // New week found, add to the list
+      weeks.push({
+        value: `week${weeks.length + 1}`,
+        label: `Week ${weeks.length + 1}`,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
+    }
+  });
+
+  console.log('All Weeks:', weeks); // Log all extracted weeks
+
+  return weeks;
+}
+
+function formatDate(date) {
+  // Format date as YYYY-MM-DD
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 
       function parseRSS(xml) {
       const events = [];
