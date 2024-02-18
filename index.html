@@ -171,39 +171,35 @@ function displayEventsInTable(events) {
 }
 
 
-// Add a function to format date and time
+
+// Ensure formatDate function is defined before using it
 function formatDate(date) {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
   return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
-// ... (rest of your code)
-
-
-// ... (previous code)
-
 document.addEventListener('DOMContentLoaded', function () {
-  const fetchButton = document.getElementById('fetch-button');
-  const datePicker = flatpickr('#calendar', {
+  const calendar = flatpickr('#calendar', {
     mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
     onClose: function (selectedDates) {
-  const startDate = selectedDates[0];
-  const endDate = selectedDates[1];
-  if (startDate && endDate) {
-    const formattedStartDate = formatDate(startDate);
-    const formattedEndDate = formatDate(endDate);
-    const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
-    console.log('Selected Week:', selectedWeek);
-    fetchAndDisplayEvents(selectedWeek);
-  } else {
-    console.warn('No week selected. Please choose a week.');
-  }
-}
+      const startDate = selectedDates[0];
+      const endDate = selectedDates[1];
 
-
+      if (selectedDates && selectedDates.length === 2) {
+        const formattedStartDate = formatDate(startDate);
+        const formattedEndDate = formatDate(endDate);
+        const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
+        console.log('Selected Week:', selectedWeek);
+        fetchAndDisplayEvents(selectedWeek);
+      } else {
+        console.warn('No week selected. Please choose a week.');
+      }
     }
   });
+
+  // ... (rest of your code)
+});
 
   if (fetchButton && datePicker) {
     fetchButton.addEventListener('click', function () {
@@ -221,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
     console.error('Fetch button or datepicker not found.');
   }
-});
+
 
 
 </script>
