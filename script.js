@@ -38,7 +38,24 @@ document.addEventListener('DOMContentLoaded', function () {
     return events;
   }
   function populateWeekOptions() {
-    // Your existing code for populating week options
+    const weekSelector = document.getElementById('week-selector');
+  
+    // Replace these with your actual start and end dates
+    const startDate = new Date('2024-01-01');
+    const endDate = new Date('2024-12-31');
+  
+    let currentDate = new Date(startDate);
+  
+    while (currentDate <= endDate) {
+      const formattedDate = getFormattedWeek(currentDate);
+      const option = document.createElement('option');
+      option.value = formattedDate;
+      option.textContent = formattedDate;
+      weekSelector.appendChild(option);
+  
+      // Move to the next week
+      currentDate.setDate(currentDate.getDate() + 7);
+    }
   }
   function getWeekNumber(date) {
     const startDate = new Date(date);
