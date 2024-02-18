@@ -2,47 +2,35 @@ function extractWeeks(xml) {
   const weeks = [];
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, 'text/xml');
-  const items = xmlDoc.evaluate('//start[namespace-uri()="events"]', xmlDoc, null, XPathResult.ANY_TYPE, null);
+  const items = xmlDoc.querySelectorAll('item');
 
-  let startNode = items.iterateNext();
+  items.forEach(item => {
+    const startString = item.querySelector('start').textContent;
+    const endString = item.querySelector('end').textContent;
 
-  while (startNode) {
-    const endNode = startNode.nextElementSibling;
-    
-    if (endNode && endNode.localName === 'end' && endNode.namespaceURI === 'events') {
-      const startString = startNode.textContent;
-      const endString = endNode.textContent;
+    // Parse the start and end dates using the provided date format
+    const startDate = new Date(startString.replace(/ GMT$/, ''));
+    const endDate = new Date(endString.replace(/ GMT$/, ''));
 
-      // Log the content of 'start' and 'end' elements
-      console.log('Start:', startString);
-      console.log('End:', endString);
+    // Format dates as YYYY-MM-DD for comparison
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
 
-      // Parse the start and end dates
-      const startDate = new Date(startString);
-      const endDate = new Date(endString);
+    // Check if this week is already in the list
+    const existingWeek = weeks.find(week =>
+      week.startDate === formattedStartDate && week.endDate === formattedEndDate
+    );
 
-      // Format dates as YYYY-MM-DD for comparison
-      const formattedStartDate = formatDate(startDate);
-      const formattedEndDate = formatDate(endDate);
-
-      // Check if this week is already in the list
-      const existingWeek = weeks.find(week =>
-        week.startDate === formattedStartDate && week.endDate === formattedEndDate
-      );
-
-      if (!existingWeek) {
-        // New week found, add to the list
-        weeks.push({
-          value: `week${weeks.length + 1}`,
-          label: `Week ${weeks.length + 1}`,
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        });
-      }
+    if (!existingWeek) {
+      // New week found, add to the list
+      weeks.push({
+        value: `${formattedStartDate}-${formattedEndDate}`,
+        label: `Week ${weeks.length + 1}`,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
     }
-
-    startNode = items.iterateNext();
-  }
+  });
 
   console.log('All Weeks:', weeks); // Log all extracted weeks
 
