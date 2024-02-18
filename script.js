@@ -1,4 +1,3 @@
-// Declare weekSelector in a scope accessible to both functions
 let weekSelector;
 
 function extractWeeks(xml) {
@@ -101,19 +100,42 @@ function fetchAndDisplayEvents(weekSelector) {
   });
 }
 
+
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
   const weekSelector = document.getElementById('week-selector');
+  const datePicker = flatpickr('#datepicker', {
+    mode: 'range', // Allow selecting a date range
+    dateFormat: 'Y-m-d',
+    onClose: function (selectedDates) {
+      const startDate = selectedDates[0];
+      const endDate = selectedDates[1];
+      if (startDate && endDate) {
+        const formattedStartDate = formatDate(startDate);
+        const formattedEndDate = formatDate(endDate);
+        const selectedWeek = `${formattedStartDate}-${formattedEndDate}`;
+        console.log('Selected Week:', selectedWeek);
+        fetchAndDisplayEvents(selectedWeek);
+      } else {
+        console.warn('No week selected. Please choose a week.');
+      }
+    }
+  });
 
   if (fetchButton && weekSelector) {
     fetchButton.addEventListener('click', function () {
-      fetchAndDisplayEvents(weekSelector);
+      const selectedWeek = weekSelector.value;
+      if (selectedWeek) {
+        console.log('Selected Week:', selectedWeek);
+        fetchAndDisplayEvents(selectedWeek);
+      } else {
+        console.warn('No week selected. Please choose a week.');
+      }
     });
+
     // Populate the week selector with dynamically generated options
     populateWeekSelector(weekSelector);
   } else {
     console.error('Fetch button or week selector not found.');
   }
 });
-
-
