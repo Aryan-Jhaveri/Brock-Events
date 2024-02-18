@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
         cell.innerHTML = eventsHTML;
       }
   
-      // Move to the next day
       currentDate.setDate(currentDate.getDate() + 1);
-    }    
+    }
+  }
+})();
+ 
