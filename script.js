@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Add event listener to the "Fetch Events" button
-    const fetchButton = document.querySelector('#fetch-button');
+    const fetchButton = document.querySelector('button[data-action="fetch-events"]');
     fetchButton.addEventListener('click', fetchAndDisplayEvents);
   
     function fetchAndDisplayEvents() {
@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         error: function (error) {
           console.error('Error fetching RSS feed:', error);
-          // Add user feedback for error, e.g., display an error message
-          alert('Error fetching events. Please try again later.');
         }
       });
     }
