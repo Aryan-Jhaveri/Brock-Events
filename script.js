@@ -2,16 +2,15 @@ function extractWeeks(xml) {
   const weeks = [];
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, 'text/xml');
-  const items = xmlDoc.evaluate('//start[namespace-uri()="events"]', xmlDoc, null, XPathResult.ANY_TYPE, null);
+  const items = xmlDoc.querySelectorAll('item');
 
-  let startNode = items.iterateNext();
+  items.forEach(item => {
+    const startElement = item.querySelector('start[xmlns="events"]');
+    const endElement = item.querySelector('end[xmlns="events"]');
 
-  while (startNode) {
-    const endNode = startNode.nextElementSibling;
-    
-    if (endNode && endNode.localName === 'end' && endNode.namespaceURI === 'events') {
-      const startString = startNode.textContent;
-      const endString = endNode.textContent;
+    if (startElement && endElement) {
+      const startString = startElement.textContent;
+      const endString = endElement.textContent;
 
       // Log the content of 'start' and 'end' elements
       console.log('Start:', startString);
@@ -40,14 +39,13 @@ function extractWeeks(xml) {
         });
       }
     }
-
-    startNode = items.iterateNext();
-  }
+  });
 
   console.log('All Weeks:', weeks); // Log all extracted weeks
 
   return weeks;
 }
+
 
 function populateWeekSelector(selector) {
   // Make an AJAX request to the RSS feed to get all weeks
@@ -65,14 +63,13 @@ function populateWeekSelector(selector) {
         option.value = `${week.startDate}-${week.endDate}`;
         option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
         selector.appendChild(option);
-      });
+      });      
     },
     error: function (error) {
       console.error('Error fetching RSS feed:', error);
     }
   });
 }
-
 
 function parseRSS(xml) {
   const events = [];
