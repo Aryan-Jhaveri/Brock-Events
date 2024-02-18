@@ -1,3 +1,6 @@
+// Declare weekSelector in a scope accessible to both functions
+let weekSelector;
+
 function extractWeeks(xml) {
   const weeks = [];
   const parser = new DOMParser();
@@ -65,81 +68,6 @@ function populateWeekSelector(selector) {
   });
 }
 
-function parseRSS(xml) {
-  const events = [];
-
-  // Use DOMParser to parse XML
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xml, 'text/xml');
-
-  // Iterate through each item in the XML
-  const items = xmlDoc.querySelectorAll('item');
-  items.forEach(item => {
-    const title = item.querySelector('title').textContent;
-    const description = item.querySelector('description').textContent;
-    const link = item.querySelector('link').textContent;
-    const startString = item.querySelector('start').textContent;
-    const endString = item.querySelector('end').textContent;
-
-    const start = new Date(startString);
-    const end = new Date(endString);
-
-    events.push({
-      title: title,
-      description: description,
-      link: link,
-      start: start,
-      end: end,
-    });
-  });
-
-  return events;
-}
-
-function formatDate(date) {
-  // Format date as YYYY-MM-DD
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-
-function displayEventsInTable(events) {
-  const eventsBody = document.getElementById('events-body');
-  if (eventsBody) {
-    eventsBody.innerHTML = ''; // Clear previous events
-
-    // Populate the table with events
-    events.forEach(event => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-          <td>${event.title}</td>
-          <td>${event.description}</td>
-          <td>${event.start}</td>
-          <td>${event.end}</td>
-          <td><a href="${event.link}" target="_blank">Link</a></td>
-        `;
-      eventsBody.appendChild(row);
-    });
-  } else {
-    console.error('Events body not found.');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  const fetchButton = document.getElementById('fetch-button');
-  const weekSelector = document.getElementById('week-selector');
-
-  if (fetchButton && weekSelector) {
-    fetchButton.addEventListener('click', fetchAndDisplayEvents);
-    // Populate the week selector with dynamically generated options
-    populateWeekSelector(weekSelector);
-  } else {
-    console.error('Fetch button or week selector not found.');
-  }
-});
-
 function fetchAndDisplayEvents() {
   const selectedWeek = weekSelector.value;
   console.log('Selected Week:', selectedWeek);
@@ -172,3 +100,17 @@ function fetchAndDisplayEvents() {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  const fetchButton = document.getElementById('fetch-button');
+  // Assign the value to weekSelector here
+  weekSelector = document.getElementById('week-selector');
+
+  if (fetchButton && weekSelector) {
+    fetchButton.addEventListener('click', fetchAndDisplayEvents);
+    // Populate the week selector with dynamically generated options
+    populateWeekSelector(weekSelector);
+  } else {
+    console.error('Fetch button or week selector not found.');
+  }
+});
