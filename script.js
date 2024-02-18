@@ -15,24 +15,22 @@ document.addEventListener('DOMContentLoaded', function () {
   
     // Define fetchEvents function
     function fetchEvents(start, end, timezone, callback) {
-      // Example events data (replace with your actual data)
-      const events = [
-        {
-          title: 'Event 1',
-          start: '2024-01-01',
-          end: '2024-01-03'
-        },
-        {
-          title: 'Event 2',
-          start: '2024-01-05',
-          end: '2024-01-07'
-        },
-        // Add more events as needed
-      ];
-  
-      // Callback with the events
-      callback(events);
-    }
+        const events = [
+          {
+            title: 'Event 1',
+            start: '2024-01-01',
+            end: '2024-01-03'
+          },
+          {
+            title: 'Event 2',
+            start: '2024-01-05',
+            end: '2024-01-07'
+          },
+          // Add more events as needed
+        ];
+      
+        callback(events);
+      }      
   });
   
   
