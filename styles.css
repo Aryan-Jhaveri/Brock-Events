@@ -3,6 +3,17 @@
     margin: 0 auto;
   }
   
+  #week-selector-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  #week-selector {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  
   table {
     width: 100%;
     border-collapse: collapse;
