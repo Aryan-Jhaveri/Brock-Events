@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add event listener to the "Fetch Events" button
     const fetchButton = document.querySelector('#fetch-button');
     fetchButton.addEventListener('click', fetchAndDisplayEvents);
-    
-    function fetchEvents(start, end, timezone, callback, selectedWeek){
+
+    function fetchAndDisplayEvents() {
         // Make an AJAX request to the RSS feed
         $.ajax({
           url: 'https://experiencebu.brocku.ca/events.rss',
@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error fetching RSS feed:', error);
           }
         });
-      }
-      
-      function parseRSS(xml, selectedWeek) {
+      } 
+    
+   function parseRSS(xml, selectedWeek) {
         const events = [];
       
         // Use DOMParser to parse XML
@@ -54,6 +54,25 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       
       
+    function fetchEvents(start, end, timezone, callback, selectedWeek){
+        // Make an AJAX request to the RSS feed
+        $.ajax({
+          url: 'https://experiencebu.brocku.ca/events.rss',
+          method: 'GET',
+          dataType: 'xml',
+          success: function (data) {
+            // Parse the RSS feed and extract events
+            const events = parseRSS(data);
+            // Display events in the table
+            displayEventsInTable(events);
+          },
+          error: function (error) {
+            console.error('Error fetching RSS feed:', error);
+          }
+        });
+      }
+      
+      
       function displayEventsInTable(events) {
         const eventsBody = document.getElementById('events-body');
         eventsBody.innerHTML = ''; // Clear previous events
@@ -73,10 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
   });
   
-  function fetchAndDisplayEvents() {
-    // Fetch events and display them in the table
-    fetchEvents();
-  }
+
   
 
   
