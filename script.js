@@ -50,6 +50,7 @@ function extractWeeks(xml) {
 }
 
 function populateWeekSelector(selector) {
+  console.log('Populating week selector...');
   // Make an AJAX request to the RSS feed to get all weeks
   $.ajax({
     url: 'https://experiencebu.brocku.ca/events.rss',
