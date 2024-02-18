@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   function displayEventsInTable(events) {
+    console.log('Received events:', events);
+  
     const eventsBody = document.getElementById('events-body');
     eventsBody.innerHTML = ''; // Clear previous events
   
@@ -74,4 +76,5 @@ document.addEventListener('DOMContentLoaded', function () {
       eventsBody.appendChild(row);
     });
   }
+  
   
