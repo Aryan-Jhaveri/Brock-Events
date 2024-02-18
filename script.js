@@ -38,7 +38,6 @@ function extractWeeks(xml) {
 }
 
 function populateWeekSelector(selector) {
-  console.log('Populating week selector...');
   // Make an AJAX request to the RSS feed to get all weeks
   $.ajax({
     url: 'https://experiencebu.brocku.ca/events.rss',
@@ -47,6 +46,7 @@ function populateWeekSelector(selector) {
     success: function (data) {
       // Parse the RSS feed and extract start and end dates of each week
       const weeks = extractWeeks(data);
+      console.log('Populating Week Selector - All Weeks:', weeks);
 
       // Populate the week selector with dynamically generated options
       weeks.forEach(week => {
@@ -54,7 +54,7 @@ function populateWeekSelector(selector) {
         option.value = `${week.startDate}-${week.endDate}`;
         option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
         selector.appendChild(option);
-      });      
+      });
     },
     error: function (error) {
       console.error('Error fetching RSS feed:', error);
@@ -138,29 +138,32 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchAndDisplayEvents() {
-  const selectedWeek = weekSelector.value;
-  const [startDate, endDate] = selectedWeek.split('-');
-
-  // Make an AJAX request to the RSS feed for the selected week
-  $.ajax({
-    url: 'https://experiencebu.brocku.ca/events.rss',
-    method: 'GET',
-    dataType: 'xml',
-    success: function (data) {
-      // Parse the RSS feed and extract events for the selected week
-      const events = parseRSS(data);
-      const filteredEvents = events.filter(event =>
-        isEventInSelectedWeek(event, startDate, endDate)
-      );
-
-      // Display filtered events in the table
-      displayEventsInTable(filteredEvents);
-    },
-    error: function (error) {
-      console.error('Error fetching RSS feed:', error);
-    }
-  });
-}
+    const selectedWeek = weekSelector.value;
+    console.log('Selected Week:', selectedWeek);
+  
+    const [startDate, endDate] = selectedWeek.split('-');
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+  
+    // Make an AJAX request to the RSS feed for the selected week
+    $.ajax({
+      url: `https://experiencebu.brocku.ca/events.rss?week=${selectedWeek}`,
+      method: 'GET',
+      dataType: 'xml',
+      success: function (data) {
+        // Parse the RSS feed and extract events
+        const events = parseRSS(data);
+        console.log('Parsed Events:', events);
+  
+        // Display events in the table
+        displayEventsInTable(events);
+      },
+      error: function (error) {
+        console.error('Error fetching RSS feed:', error);
+      }
+    });
+  }
+  
 
   function isEventInSelectedWeek(event, startDate, endDate) {
     // Parse the start and end dates of the event
