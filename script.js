@@ -14,32 +14,27 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
   
+  // Define fetchEvents function
   function fetchEvents(start, end, timezone, callback) {
     // Example events data (replace with your actual data)
     const events = [
       {
         title: 'Event 1',
         start: '2024-01-01',
-        end: '2024-01-03',
-        description: 'Description for Event 1',
-        link: 'https://example.com/event1'
+        end: '2024-01-03'
       },
       {
         title: 'Event 2',
         start: '2024-01-05',
-        end: '2024-01-07',
-        description: 'Description for Event 2',
-        link: 'https://example.com/event2'
+        end: '2024-01-07'
       },
       // Add more events as needed
     ];
   
     // Callback with the events
     callback(events);
-  
-    // Display events in the table
-    displayEventsInTable(events);
   }
+  
   
   function displayEventsInTable(events) {
     const eventsBody = document.getElementById('events-body');
