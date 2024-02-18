@@ -47,30 +47,39 @@ function extractWeeks(xml) {
   const items = xmlDoc.querySelectorAll('item');
 
   items.forEach(item => {
-    const startString = item.querySelector('start[xmlns="events"]').textContent;
-    const endString = item.querySelector('end[xmlns="events"]').textContent;
+    const startElement = item.querySelector('start[xmlns="events"]');
+    const endElement = item.querySelector('end[xmlns="events"]');
 
-    // Parse the start and end dates
-    const startDate = new Date(startString);
-    const endDate = new Date(endString);
+    if (startElement && endElement) {
+      const startString = startElement.textContent;
+      const endString = endElement.textContent;
 
-    // Format dates as YYYY-MM-DD for comparison
-    const formattedStartDate = formatDate(startDate);
-    const formattedEndDate = formatDate(endDate);
+      // Log the content of 'start' and 'end' elements
+      console.log('Start:', startString);
+      console.log('End:', endString);
 
-    // Check if this week is already in the list
-    const existingWeek = weeks.find(week =>
-      week.startDate === formattedStartDate && week.endDate === formattedEndDate
-    );
+      // Parse the start and end dates
+      const startDate = new Date(startString);
+      const endDate = new Date(endString);
 
-    if (!existingWeek) {
-      // New week found, add to the list
-      weeks.push({
-        value: `week${weeks.length + 1}`,
-        label: `Week ${weeks.length + 1}`,
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      });
+      // Format dates as YYYY-MM-DD for comparison
+      const formattedStartDate = formatDate(startDate);
+      const formattedEndDate = formatDate(endDate);
+
+      // Check if this week is already in the list
+      const existingWeek = weeks.find(week =>
+        week.startDate === formattedStartDate && week.endDate === formattedEndDate
+      );
+
+      if (!existingWeek) {
+        // New week found, add to the list
+        weeks.push({
+          value: `week${weeks.length + 1}`,
+          label: `Week ${weeks.length + 1}`,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        });
+      }
     }
   });
 
@@ -78,6 +87,7 @@ function extractWeeks(xml) {
 
   return weeks;
 }
+
 
 function populateWeekSelector(selector) {
   // Make an AJAX request to the RSS feed to get all weeks
@@ -198,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 });
-
 </script>
 </body>
 
