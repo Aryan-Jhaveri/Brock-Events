@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
     // Display a loading indicator
     const eventsBody = document.getElementById('events-body');
-    eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+    eventsBody.innerHTML = '';
   
     fetch(rssFeedUrl)
       .then(response => response.text())
@@ -76,68 +76,48 @@ document.addEventListener('DOMContentLoaded', function () {
           };
         });
   
-        // Display events in the table
-        displayEvents(events);
+        // Display events in the calendar
+        displayEventsInCalendar(events);
       })
       .catch(error => {
         console.error('Error fetching RSS feed:', error);
         // Display an error message to the user
-        eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
+        eventsBody.innerHTML = '<tr><td colspan="7">Error fetching events. Please try again later.</td></tr>';
       });
   }
   
-  function displayEvents(events) {
+  function displayEventsInCalendar(events) {
     const eventsBody = document.getElementById('events-body');
-    eventsBody.innerHTML = ''; // Clear existing content
   
-    // Group events by week
-    const eventsByWeek = {};
+    // Group events by day
+    const eventsByDay = {};
     events.forEach(event => {
-      const startOfWeek = getStartOfWeek(event.startTime);
-      if (!eventsByWeek[startOfWeek]) {
-        eventsByWeek[startOfWeek] = [];
+      const eventDate = new Date(event.startTime);
+      const dayKey = getFormattedDateKey(eventDate);
+      if (!eventsByDay[dayKey]) {
+        eventsByDay[dayKey] = [];
       }
-      eventsByWeek[startOfWeek].push(event);
+      eventsByDay[dayKey].push(event);
     });
   
-    // Display events in the table
-    for (const startOfWeek in eventsByWeek) {
-      const eventsForWeek = eventsByWeek[startOfWeek];
-      const endOfWeek = getEndOfWeek(startOfWeek);
+    // Fill in the calendar cells with events
+    const startDate = new Date('2024-01-01'); // Adjust this to your start date
+    const endDate = new Date('2024-12-31');   // Adjust this to your end date
+    let currentDate = new Date(startDate);
   
-      // Create a row for the week
-      const weekRow = document.createElement('tr');
-      weekRow.innerHTML = `
-        <td colspan="5"><strong>${startOfWeek} - ${endOfWeek}</strong></td>
-      `;
-      eventsBody.appendChild(weekRow);
+    while (currentDate <= endDate) {
+      const dayKey = getFormattedDateKey(currentDate);
+      const cell = document.getElementById(dayKey);
+      if (cell) {
+        const eventsForDay = eventsByDay[dayKey] || [];
+        const eventsHTML = eventsForDay.map(event => `
+          <strong>${event.title}</strong><br>
+          ${event.startTime} - ${event.endTime}<br>
+          <a href="${event.link}" target="_blank">Link</a>
+        `).join('<br><br>');
+        cell.innerHTML = eventsHTML;
+      }
   
-      // Create rows for each event in the week
-      eventsForWeek.forEach(event => {
-        const eventRow = document.createElement('tr');
-        eventRow.innerHTML = `
-          <td>${event.title}</td>
-          <td>${event.description}</td>
-          <td>${event.startTime}</td>
-          <td>${event.endTime}</td>
-          <td><a href="${event.link}" target="_blank">Link</a></td>
-        `;
-        eventsBody.appendChild(eventRow);
-      });
-    }
-  }
-  
-  function getStartOfWeek(dateString) {
-    const date = new Date(dateString);
-    const firstDayOfWeek = new Date(date.setDate(date.getDate() - date.getDay()));
-    return firstDayOfWeek.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
-  }
-  
-  function getEndOfWeek(startOfWeek) {
-    const startDate = new Date(startOfWeek);
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-    return endDate.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
-  }
-  
+      // Move to the next day
+      currentDate.setDate(currentDate.getDate() + 
   
