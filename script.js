@@ -67,12 +67,11 @@ function populateWeekSelector(selector) {
   });
 }
 
-function fetchAndDisplayEvents(weekSelector) {
-  const selectedWeek = weekSelector.value;
+function fetchAndDisplayEvents(selectedWeek) {
   console.log('Selected Week:', selectedWeek);
 
   // Check if a week is selected
-  if (!selectedWeek || selectedWeek === "") {
+  if (!selectedWeek) {
     console.warn('No week selected. Please choose a week.');
     return;
   }
@@ -99,6 +98,18 @@ function fetchAndDisplayEvents(weekSelector) {
     }
   });
 }
+
+function displayEventsInTable(events) {
+  const eventsBody = document.getElementById('events-body');
+  if (eventsBody) {
+    // Clear previous events
+    eventsBody.innerHTML = '';
+
+    // Populate the table with events
+    events.forEach(event => {
+      const row = document.createElement('tr');
+      row
+
 
 
 document.addEventListener('DOMContentLoaded', function () {

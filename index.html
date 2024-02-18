@@ -49,7 +49,6 @@
   </table>
 
 <script>
-// Declare weekSelector in a scope accessible to both functions
 let weekSelector;
 
 function extractWeeks(xml) {
@@ -119,12 +118,11 @@ function populateWeekSelector(selector) {
   });
 }
 
-function fetchAndDisplayEvents(weekSelector) {
-  const selectedWeek = weekSelector.value;
+function fetchAndDisplayEvents(selectedWeek) {
   console.log('Selected Week:', selectedWeek);
 
   // Check if a week is selected
-  if (!selectedWeek || selectedWeek === "") {
+  if (!selectedWeek) {
     console.warn('No week selected. Please choose a week.');
     return;
   }
@@ -151,6 +149,18 @@ function fetchAndDisplayEvents(weekSelector) {
     }
   });
 }
+
+function displayEventsInTable(events) {
+  const eventsBody = document.getElementById('events-body');
+  if (eventsBody) {
+    // Clear previous events
+    eventsBody.innerHTML = '';
+
+    // Populate the table with events
+    events.forEach(event => {
+      const row = document.createElement('tr');
+      row
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -191,34 +201,6 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Fetch button or week selector not found.');
   }
 });
-
-
-function populateWeekSelector(datePicker) {
-  // Make an AJAX request to the RSS feed to get all weeks
-  $.ajax({
-    url: 'https://experiencebu.brocku.ca/events.rss',
-    method: 'GET',
-    dataType: 'xml',
-    success: function (data) {
-      // Parse the RSS feed and extract start and end dates of each week
-      const weeks = extractWeeks(data);
-      console.log('Populating Week Selector - All Weeks:', weeks);
-
-      // Set the available date range in the date picker
-      const availableDates = weeks.map(week => ({
-        from: new Date(week.startDate),
-        to: new Date(week.endDate)
-      }));
-      datePicker.set('disable', availableDates);
-
-      // Log the selected value after options are added
-      console.log('Selected Week After Population:', datePicker.selectedDates);
-    },
-    error: function (error) {
-      console.error('Error fetching RSS feed:', error);
-    }
-  });
-}
 
 
 </script>
