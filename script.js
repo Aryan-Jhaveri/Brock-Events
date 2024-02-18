@@ -134,6 +134,7 @@ function formatDateTime(dateTime) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
+  const weekSelector = document.getElementById('week-selector');
   const datePicker = flatpickr('#datepicker', {
     mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
@@ -151,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   });
+});
 
   if (fetchButton && datePicker) {
     fetchButton.addEventListener('click', function () {
