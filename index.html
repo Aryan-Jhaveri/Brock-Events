@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <!DOCTYPE html>
-  <html lang="en">
-  
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Calendar</title>
-  
-    <!-- Include jQuery, moment.js, and FullCalendar -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-  
-    <!-- Include daterangepicker library -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
-  
-    <!-- Include your custom script.js -->
-    <script src="script.js"></script>
-  </head>
-  
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Calendar</title>
+
+  <!-- Include jQuery, moment.js, and FullCalendar -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+
+  <!-- Include flatpickr library -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- Include your custom script.js -->
+  <script src="script.js"></script>
+</head>
 
 <body>
   <h1>Event Calendar</h1>
 
   <div>
-    <label for="week-selector">Select Week: </label>
-    <input type="week" id="week-selector" name="week-selector">
-
-  </div>
-  <div>
+    <!-- Add a calendar input -->
     <label for="calendar">Select Week from Calendar: </label>
     <input type="text" id="calendar" placeholder="Select a week" readonly="readonly">
   </div>
@@ -52,8 +44,6 @@
       <!-- Events will be dynamically added here -->
     </tbody>
   </table>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
   let weekSelector;
 
@@ -194,7 +184,7 @@ function formatDateTime(dateTime) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
-  const datePicker = flatpickr('#datepicker', {
+  const datePicker = flatpickr('#calendar', {
     mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
     onClose: function (selectedDates) {
