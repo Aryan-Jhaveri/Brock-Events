@@ -121,5 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
       currentDate.setDate(currentDate.getDate() + 1);
     }
   }
-})();
+});
+
  
