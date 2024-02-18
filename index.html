@@ -75,27 +75,28 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function populateWeekSelector(selector) {
-    // Make an AJAX request to the RSS feed to get all weeks
-    $.ajax({
-      url: 'https://experiencebu.brocku.ca/events.rss',
-      method: 'GET',
-      dataType: 'xml',
-      success: function (data) {
-        // Parse the RSS feed and extract start and end dates of each week
-        const weeks = extractWeeks(data);
-        // Populate the week selector with dynamically generated options
-        weeks.forEach(week => {
-          const option = document.createElement('option');
-          option.value = week.value;
-          option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
-          selector.appendChild(option);
-        });
-      },
-      error: function (error) {
-        console.error('Error fetching RSS feed:', error);
-      }
-    });
-  }
+  // Make an AJAX request to the RSS feed to get all weeks
+  $.ajax({
+    url: 'https://experiencebu.brocku.ca/events.rss',
+    method: 'GET',
+    dataType: 'xml',
+    success: function (data) {
+      // Parse the RSS feed and extract start and end dates of each week
+      const weeks = extractWeeks(data);
+      
+      // Populate the week selector with dynamically generated options
+      weeks.forEach(week => {
+        const option = document.createElement('option');
+        option.value = week.value;
+        option.text = `${week.label} (${week.startDate} to ${week.endDate})`;
+        selector.appendChild(option);
+      });
+    },
+    error: function (error) {
+      console.error('Error fetching RSS feed:', error);
+    }
+  });
+}
 
   function extractWeeks(xml) {
     const weeks = [];
@@ -195,6 +196,7 @@ function displayEventsInTable(events) {
         console.error('Events body not found.');
     }
 }
+
   </script>
 </body>
 

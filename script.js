@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
       success: function (data) {
         // Parse the RSS feed and extract start and end dates of each week
         const weeks = extractWeeks(data);
+        
         // Populate the week selector with dynamically generated options
         weeks.forEach(week => {
           const option = document.createElement('option');
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-
+  
   function extractWeeks(xml) {
     const weeks = [];
     const parser = new DOMParser();
