@@ -50,35 +50,35 @@
     }
   </script>
 
-  <script>
+<script>
     function fetchEvents() {
       const selectedWeek = document.getElementById('week-selector').value;
-
+  
       // Validate the selected week or modify as needed
-
+  
       // Example RSS feed URL (replace with your actual RSS feed URL)
       const rssFeedUrl = 'https://experiencebu.brocku.ca/events.rss';
-
+  
       // Display a loading indicator
       const eventsBody = document.getElementById('events-body');
       eventsBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
-
-      // Use a different CORS proxy
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';;
-      const fetchUrl = proxyUrl + encodeURIComponent(rssFeedUrl);
-
+  
+      // Use CORS Anywhere proxy
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const fetchUrl = proxyUrl + rssFeedUrl;
+  
       fetch(fetchUrl)
         .then(response => response.text())
         .then(data => {
           // Parse XML data from the fetched text
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(data, 'text/xml');
-
+  
           // Extract relevant information from the feed's items
           const events = Array.from(xmlDoc.querySelectorAll('item')).map(item => {
             const startTime = item.querySelector('start').textContent;
             const endTime = item.querySelector('end').textContent;
-
+  
             return {
               title: item.querySelector('title').textContent,
               description: item.querySelector('description').textContent,
@@ -87,7 +87,7 @@
               link: item.querySelector('link').textContent,
             };
           });
-
+  
           // Display events in the table
           displayEvents(events);
         })
@@ -97,6 +97,6 @@
           eventsBody.innerHTML = '<tr><td colspan="5">Error fetching events. Please try again later.</td></tr>';
         });
     }
-  </script>
+  </script>  
 </body>
 </html>
