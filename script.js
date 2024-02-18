@@ -5,8 +5,8 @@ function extractWeeks(xml) {
   const items = xmlDoc.querySelectorAll('item');
 
   items.forEach(item => {
-    const startString = item.querySelector('start').textContent; // Change to 'start'
-    const endString = item.querySelector('end').textContent; // Change to 'end'
+    const startString = item.querySelector('events|start').textContent; // Adjust the selector with namespace
+    const endString = item.querySelector('events|end').textContent; // Adjust the selector with namespace
 
     // Parse the start and end dates
     const startDate = new Date(startString);
