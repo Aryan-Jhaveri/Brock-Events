@@ -7,7 +7,7 @@ function populateWeekSelector(selector) {
     success: function (data) {
       // Parse the RSS feed and extract start and end dates of each week
       const weeks = extractWeeks(data);
-      
+
       // Populate the week selector with dynamically generated options
       weeks.forEach(week => {
         const option = document.createElement('option');
@@ -32,24 +32,54 @@ function parseRSS(xml) {
   // Iterate through each item in the XML
   const items = xmlDoc.querySelectorAll('item');
   items.forEach(item => {
-      const title = item.querySelector('title').textContent;
-      const description = item.querySelector('description').textContent;
-      const link = item.querySelector('link').textContent;
-      const start = item.querySelector('start').textContent;
-      const end = item.querySelector('end').textContent;
+    const title = item.querySelector('title').textContent;
+    const description = item.querySelector('description').textContent;
+    const link = item.querySelector('link').textContent;
+    const start = item.querySelector('start').textContent;
+    const end = item.querySelector('end').textContent;
 
-      // You may need to further process start and end dates based on your needs
+    // You may need to further process start and end dates based on your needs
 
-      events.push({
-          title: title,
-          description: description,
-          link: link,
-          start: start,
-          end: end,
-      });
+    events.push({
+      title: title,
+      description: description,
+      link: link,
+      start: start,
+      end: end,
+    });
   });
 
   return events;
+}
+
+function formatDate(date) {
+  // Format date as YYYY-MM-DD
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function displayEventsInTable(events) {
+  const eventsBody = document.getElementById('events-body');
+  if (eventsBody) {
+    eventsBody.innerHTML = ''; // Clear previous events
+
+    // Populate the table with events
+    events.forEach(event => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+              <td>${event.title}</td>
+              <td>${event.description}</td>
+              <td>${event.start}</td>
+              <td>${event.end}</td>
+              <td><a href="${event.link}" target="_blank">Link</a></td>
+            `;
+      eventsBody.appendChild(row);
+    });
+  } else {
+    console.error('Events body not found.');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -83,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-
-  
   function extractWeeks(xml) {
     const weeks = [];
     const parser = new DOMParser();
@@ -123,33 +151,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     return weeks;
   }
-
-  function formatDate(date) {
-    // Format date as YYYY-MM-DD
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-  function displayEventsInTable(events) {
-    const eventsBody = document.getElementById('events-body');
-    if (eventsBody) {
-        eventsBody.innerHTML = ''; // Clear previous events
-
-        // Populate the table with events
-        events.forEach(event => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${event.title}</td>
-              <td>${event.description}</td>
-              <td>${event.start}</td>
-              <td>${event.end}</td>
-              <td><a href="${event.link}" target="_blank">Link</a></td>
-            `;
-            eventsBody.appendChild(row);
-        });
-    } else {
-        console.error('Events body not found.');
-    }
-  }
-}
+});
