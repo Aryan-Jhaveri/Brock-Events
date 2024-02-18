@@ -70,43 +70,15 @@ function populateWeekSelector(selector) {
 
 
 function fetchAndDisplayEvents() {
-  // Check if weekSelector is not defined
-  if (!weekSelector) {
-    console.error('weekSelector is not defined.');
-    return;
-  }
-
+  const weekSelector = document.getElementById('week-selector');
   const selectedWeek = weekSelector.value;
   console.log('Selected Week:', selectedWeek);
 
   // Check if a week is selected
-// Check if a week is selected
-if (!selectedWeek) {
-  console.warn('No week selected. Please choose a week.');
-} else {
-  const [startDate, endDate] = selectedWeek.split('-');
-  console.log('Start Date:', startDate);
-  console.log('End Date:', endDate);
-
-  // Make an AJAX request to the RSS feed for the selected week
-  $.ajax({
-    url: `https://experiencebu.brocku.ca/events.rss?week=${selectedWeek}`,
-    method: 'GET',
-    dataType: 'xml',
-    success: function (data) {
-      // Parse the RSS feed and extract events
-      const events = parseRSS(data);
-      console.log('Parsed Events:', events);
-
-      // Display events in the table
-      displayEventsInTable(events);
-    },
-    error: function (error) {
-      console.error('Error fetching RSS feed:', error);
-    }
-  });
-}
-
+  if (!selectedWeek || selectedWeek === "") {
+    console.warn('No week selected. Please choose a week.');
+    return;
+  }
 
   const [startDate, endDate] = selectedWeek.split('-');
   console.log('Start Date:', startDate);
@@ -130,6 +102,7 @@ if (!selectedWeek) {
     }
   });
 }
+
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
   const weekSelector = document.getElementById('week-selector');
