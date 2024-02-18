@@ -16,15 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   function fetchAndDisplayEvents(selectedWeek) {
-    // Make an AJAX request to the RSS feed
     $.ajax({
       url: 'https://experiencebu.brocku.ca/events.rss',
       method: 'GET',
       dataType: 'xml',
       success: function (data) {
-        // Parse the RSS feed and extract events for the selected week
+        console.log('Received data from RSS feed:', data);
         const events = parseRSS(data, selectedWeek);
-        // Display events in the table
         displayEventsInTable(events);
       },
       error: function (error) {
@@ -32,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+  
   
   function parseRSS(xml, selectedWeek) {
     // Your code to parse RSS feed and filter events for the selected week
