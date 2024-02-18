@@ -19,9 +19,16 @@
 <body>
   <h1>Event Calendar</h1>
 
-<!-- Add this inside the body of your HTML -->
-<input type="text" id="datepicker" placeholder="Select a week">
-
+  <div>
+    <label for="week-selector">Select Week: </label>
+    <select id="week-selector">
+      <!-- Options will be dynamically added here -->
+    </select>
+  </div>
+  <div>
+    <label for="calendar">Select Week from Calendar: </label>
+    <input type="text" id="calendar" placeholder="Select a week" readonly="readonly">
+  </div>
 
   <!-- Add a button to fetch events -->
   <button id="fetch-button">Fetch Events</button>
