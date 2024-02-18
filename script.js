@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
       // Use DOMParser to parse XML
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xml, 'text/xml');
-  
+      
+        // Log the entire parsed XML document to the console
+        console.log(xmlDoc);
       // Iterate through each item in the XML
       const items = xmlDoc.querySelectorAll('item');
       items.forEach(item => {
