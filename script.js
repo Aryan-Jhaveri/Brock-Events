@@ -18,17 +18,25 @@ document.addEventListener("DOMContentLoaded", function() {
           const row = tableBody.insertRow();
           row.insertCell().textContent = item.querySelector("title").textContent;
           row.insertCell().textContent = item.querySelector("link").textContent;
-          row.insertCell().textContent = item.querySelector("start").textContent; // Adjust according to the XML structure
+
+          const startTime = item.querySelector("start").textContent;
+          const endTime = item.querySelector("end").textContent;
+          row.insertCell().textContent = formatDateTime(startTime);
           
           const descriptionCell = row.insertCell();
           const description = item.querySelector("description").textContent;
           const processedDescription = processDescription(description); // Replace with your description processing logic
-          descriptionCell.textContent = processedDescription;
+          descriptionCell.innerHTML = processedDescription;
 
-          row.insertCell().textContent = item.querySelector("end").textContent; // Adjust according to the XML structure
+          row.insertCell().textContent = formatDateTime(endTime);
         });
       });
   });
+
+  function formatDateTime(dateTimeString) {
+    // Format the date and time using moment.js or any other library of your choice
+    return moment(dateTimeString).format("MMMM D, YYYY h:mm A");
+  }
 
   function processDescription(description) {
     // Add your processing logic here
