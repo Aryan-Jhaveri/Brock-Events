@@ -41,6 +41,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
           row.insertCell().textContent = formatDateTime(endTime);
         });
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
       });
   });
 
