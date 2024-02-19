@@ -1,73 +1,50 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const tableBody = document.querySelector("#table tbody");
+// script.js
 
-  // Fetch and process data when the page loads
-  fetch("https://experiencebu.brocku.ca/events.rss")
-    .then(response => response.text())
-    .then(data => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(data, "text/xml");
-      const items = xmlDoc.querySelectorAll("item");
+document.addEventListener('DOMContentLoaded', function () {
+  // Define event processing function
+  function processEvents() {
+    // Your AJAX or fetch request to retrieve XML data goes here
+    // For simplicity, I'll use a placeholder URL
+    var url = 'https://experiencebu.brocku.ca/events.rss';
 
-      tableBody.innerHTML = ''; // Clear existing table rows
+    // Fetch XML data
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        // Parse XML data
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(data, 'text/xml');
 
-      items.forEach(item => {
-        const row = tableBody.insertRow();
+        // Extract event details
+        var events = xmlDoc.querySelectorAll('item');
 
-        const titleElement = item.querySelector("title");
-        if (titleElement) {
-          row.insertCell().textContent = titleElement.textContent;
-        }
+        // Process events and update the table
+        updateTable(processEventData(events));
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }
 
-        const linkElement = item.querySelector("link");
-        if (linkElement) {
-          row.insertCell().textContent = linkElement.textContent;
-        }
-
-        // Debugging information for start and end
-        const startElement = item.querySelector("start[xmlns='events']");
-        const endElement = item.querySelector("end[xmlns='events']");
-
-        console.log(startElement); // Log start element
-        console.log(endElement); // Log end element
-
-        const startTime = startElement && startElement.textContent ? startElement.textContent : 'Not available';
-        const endTime = endElement && endElement.textContent ? endElement.textContent : 'Not available';
-
-        console.log("Start Time:", startTime); // Log start time
-        console.log("End Time:", endTime); // Log end time
-
-        if (startTime !== 'Not available') {
-          row.insertCell().textContent = formatDateTime(startTime);
-        }
-
-        const descriptionElement = item.querySelector("description");
-        if (descriptionElement) {
-          const descriptionCell = row.insertCell();
-          const description = descriptionElement.textContent;
-          const processedDescription = processDescription(description);
-          descriptionCell.innerHTML = processedDescription;
-        }
-
-        if (endTime !== 'Not available') {
-          row.insertCell().textContent = formatDateTime(endTime);
-        }
-      });
-    })
-    .catch(error => {
-      console.error("Error fetching data:", error);
+  // Define function to process event data
+  function processEventData(events) {
+    // Your processing logic goes here
+    // For simplicity, I'll just log the titles of events
+    var processedData = [];
+    events.forEach(function (event) {
+      var title = event.querySelector('title').textContent;
+      processedData.push({ Title: title });
     });
-
-  function formatDateTime(dateTimeString) {
-    // Format the date and time using moment.js or any other library of your choice
-    return moment(dateTimeString).format("MMMM D, YYYY h:mm A");
+    return processedData;
   }
 
-  function processDescription(description) {
-    // Add your processing logic here
-    // For example, you may want to remove HTML tags
-    const htmlElement = document.createElement("div");
-    htmlElement.innerHTML = description;
-    return htmlElement.textContent || htmlElement.innerText;
+  // Define function to update the table
+  function updateTable(data) {
+    // Your logic to update the table with processed data goes here
+    // For simplicity, I'll log the data
+    console.log(data);
   }
+
+  // Event listener for the button click
+  document.getElementById('processBtn').addEventListener('click', function () {
+    processEvents();
+  });
 });
