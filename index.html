@@ -86,7 +86,7 @@ function extractWeeks(xml) {
   return weeks;
 }
 
-function populateweekSelector(selector) {
+function populateWeekSelector(selector) {
   // Make an AJAX request to the RSS feed to get all weeks
   $.ajax({
     url: 'https://experiencebu.brocku.ca/events.rss',
@@ -150,7 +150,7 @@ function formatDateTime(dateTime) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
-  const datePicker = flatpickr('#datepicker', {
+  const datePicker = flatpickr('#calendar', {
     mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
     onClose: function (selectedDates) {
