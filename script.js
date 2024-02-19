@@ -47,35 +47,49 @@ document.addEventListener("DOMContentLoaded", function() {
 
         tableBody.innerHTML = ''; // Clear existing table rows
 
-        items.forEach(item => {
-          const row = tableBody.insertRow();
-          row.insertCell().textContent = item.querySelector("title").textContent;
-          row.insertCell().textContent = item.querySelector("link").textContent;
+items.forEach(item => {
+  const row = tableBody.insertRow();
+  
+  const titleElement = item.querySelector("title");
+  if (titleElement) {
+    row.insertCell().textContent = titleElement.textContent;
+  }
+  
+  const linkElement = item.querySelector("link");
+  if (linkElement) {
+    row.insertCell().textContent = linkElement.textContent;
+  }
 
-// Debugging information for start and end
-const startElement = item.querySelector("start[xmlns='events']");
-const endElement = item.querySelector("end[xmlns='events']");
+  // Debugging information for start and end
+  const startElement = item.querySelector("start[xmlns='events']");
+  const endElement = item.querySelector("end[xmlns='events']");
+  
+  console.log(startElement); // Log start element
+  console.log(endElement); // Log end element
+  
+  const startTime = startElement && startElement.textContent ? startElement.textContent : 'Not available';
+  const endTime = endElement && endElement.textContent ? endElement.textContent : 'Not available';
+  
+  console.log("Start Time:", startTime); // Log start time
+  console.log("End Time:", endTime); // Log end time
 
-console.log(startElement); // Log start element
-console.log(endElement); // Log end element
+  if (startTime !== 'Not available') {
+    row.insertCell().textContent = formatDateTime(startTime);
+  }
+  
+  const descriptionElement = item.querySelector("description");
+  if (descriptionElement) {
+    const descriptionCell = row.insertCell();
+    const description = descriptionElement.textContent;
+    const processedDescription = processDescription(description);
+    descriptionCell.innerHTML = processedDescription;
+  }
 
-const startTime = startElement && startElement.textContent ? startElement.textContent : 'Not available';
-const endTime = endElement && endElement.textContent ? endElement.textContent : 'Not available';
+  if (endTime !== 'Not available') {
+    row.insertCell().textContent = formatDateTime(endTime);
+  }
+});
 
-console.log("Start Time:", startTime); // Log start time
-console.log("End Time:", endTime); // Log end time
-
-
-          row.insertCell().textContent = formatDateTime(startTime);
-          
-          const descriptionCell = row.insertCell();
-          const description = item.querySelector("description").textContent;
-          const processedDescription = processDescription(description);
-          descriptionCell.innerHTML = processedDescription;
-
-          row.insertCell().textContent = formatDateTime(endTime);
-        });
-      })
       .catch(error => {
         console.error("Error fetching data:", error);
       });
