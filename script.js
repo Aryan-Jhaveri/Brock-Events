@@ -39,6 +39,8 @@ function extractWeeks(xml) {
   return weeks;
 }
 
+// let weekSelector;
+
 function populateWeekSelector(selector) {
   // Make an AJAX request to the RSS feed to get all weeks
   $.ajax({
