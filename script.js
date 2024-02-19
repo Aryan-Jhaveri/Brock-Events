@@ -12,6 +12,38 @@ document.addEventListener("DOMContentLoaded", function() {
         const xmlDoc = parser.parseFromString(data, "text/xml");
         const items = xmlDoc.querySelectorAll("item");
 
+  tableBody.innerHTML = ''; // Clear existing table rows
+
+  items.forEach(item => {
+    const row = tableBody.insertRow();
+    row.insertCell().textContent = item.querySelector("title").textContent;
+    row.insertCell().textContent = item.querySelector("link").textContent;
+
+    // Debugging information for start and end
+    const startElement = item.querySelector("start[xmlns='events']");
+    const endElement = item.querySelector("end[xmlns='events']");
+    
+    console.log(startElement); // Log start element
+    console.log(endElement); // Log end element
+
+    const startTime = startElement ? startElement.textContent : 'Not available'; // Check if start element exists
+    const endTime = endElement ? endElement.textContent : 'Not available'; // Check if end element exists
+    
+    console.log("Start Time:", startTime); // Log start time
+    console.log("End Time:", endTime); // Log end time
+
+    row.insertCell().textContent = formatDateTime(startTime);
+    
+    const descriptionCell = row.insertCell();
+    const description = item.querySelector("description").textContent;
+    const processedDescription = processDescription(description);
+    descriptionCell.innerHTML = processedDescription;
+
+    row.insertCell().textContent = formatDateTime(endTime);
+  });
+})
+
+
         tableBody.innerHTML = ''; // Clear existing table rows
 
         items.forEach(item => {
