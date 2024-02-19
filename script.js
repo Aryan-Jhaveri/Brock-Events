@@ -104,7 +104,7 @@ function formatDateTime(dateTime) {
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
   const datePicker = flatpickr('#datepicker', {
-    mode: 'range', // Allow selecting a date range
+    mode: 'range',
     dateFormat: 'Y-m-d',
     onClose: function (selectedDates) {
       const startDate = selectedDates[0];
