@@ -85,7 +85,7 @@
   
     return weeks;
   }
-function populateWeekSelector(selector) {
+  function populateWeekSelector(selector) {
   // Make an AJAX request to the RSS feed to get all weeks
   $.ajax({
     url: 'https://experiencebu.brocku.ca/events.rss',
@@ -113,7 +113,7 @@ function populateWeekSelector(selector) {
   });
 }
 
-function fetchAndDisplayEvents(selectedWeek) {
+  function fetchAndDisplayEvents(selectedWeek) {
   console.log('Selected Week:', selectedWeek);
 
   // Check if a week is selected
@@ -147,7 +147,7 @@ function fetchAndDisplayEvents(selectedWeek) {
 
 // ... (previous code)
 
-function displayEventsInTable(events) {
+  function displayEventsInTable(events) {
   const eventsBody = document.getElementById('events-body');
   if (eventsBody) {
     // Clear previous events
