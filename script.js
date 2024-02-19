@@ -1,4 +1,4 @@
-let weekSelector;
+let weekSelector;  // This should be the only declaration
 
 function extractWeeks(xml) {
   const weeks = [];
@@ -104,7 +104,7 @@ function formatDateTime(dateTime) {
 document.addEventListener('DOMContentLoaded', function () {
   const fetchButton = document.getElementById('fetch-button');
   const datePicker = flatpickr('#datepicker', {
-    mode: 'range',
+    mode: 'range', // Allow selecting a date range
     dateFormat: 'Y-m-d',
     onClose: function (selectedDates) {
       const startDate = selectedDates[0];
