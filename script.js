@@ -19,8 +19,15 @@ document.addEventListener("DOMContentLoaded", function() {
           row.insertCell().textContent = item.querySelector("title").textContent;
           row.insertCell().textContent = item.querySelector("link").textContent;
 
+          // Debugging information for start and end
+          console.log(item.querySelector("start[xmlns='events']")); // Log start element
+          console.log(item.querySelector("end[xmlns='events']")); // Log end element
+
           const startTime = item.querySelector("start[xmlns='events']").textContent; // Adjust for the namespace
           const endTime = item.querySelector("end[xmlns='events']").textContent; // Adjust for the namespace
+          console.log("Start Time:", startTime); // Log start time
+          console.log("End Time:", endTime); // Log end time
+
           row.insertCell().textContent = formatDateTime(startTime);
           
           const descriptionCell = row.insertCell();
