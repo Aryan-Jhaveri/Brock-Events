@@ -19,13 +19,13 @@ document.addEventListener("DOMContentLoaded", function() {
           row.insertCell().textContent = item.querySelector("title").textContent;
           row.insertCell().textContent = item.querySelector("link").textContent;
 
-          const startTime = item.querySelector("start").textContent;
-          const endTime = item.querySelector("end").textContent;
+          const startTime = item.querySelector("start[xmlns='events']").textContent; // Adjust for the namespace
+          const endTime = item.querySelector("end[xmlns='events']").textContent; // Adjust for the namespace
           row.insertCell().textContent = formatDateTime(startTime);
           
           const descriptionCell = row.insertCell();
           const description = item.querySelector("description").textContent;
-          const processedDescription = processDescription(description); // Replace with your description processing logic
+          const processedDescription = processDescription(description);
           descriptionCell.innerHTML = processedDescription;
 
           row.insertCell().textContent = formatDateTime(endTime);
