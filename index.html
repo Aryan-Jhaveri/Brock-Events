@@ -9,17 +9,28 @@
   <!-- Include necessary libraries -->
   <!-- For example, you can use CDN links for simplicity -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <!-- Include other libraries as needed -->
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <div id="app">
-    <!-- Your Shiny UI goes here -->
+    <!-- Your Shiny-like UI goes here -->
     <div id="titlePanel">Brock University Events</div>
     <button id="processBtn">Process Events</button>
-    <table id="table"></table>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Link</th>
+          <th>Start</th>
+          <th>Description</th>
+          <th>End</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
-
-  <script src="script.js" defer></script>
 </body>
 </html>
