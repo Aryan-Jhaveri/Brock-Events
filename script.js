@@ -38,9 +38,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Define function to update the table
   function updateTable(data) {
-    // Your logic to update the table with processed data goes here
-    // For simplicity, I'll log the data
-    console.log(data);
+    // Clear existing table
+    var tableContainer = document.getElementById('tableContainer');
+    if (tableContainer.firstChild) {
+      tableContainer.removeChild(tableContainer.firstChild);
+    }
+
+    // Create table element
+    var table = document.createElement('table');
+    table.classList.add('event-table');
+
+    // Create table header
+    var thead = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+
+    for (var key in data[0]) {
+      var th = document.createElement('th');
+      th.textContent = key;
+      headerRow.appendChild(th);
+    }
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Create table body
+    var tbody = document.createElement('tbody');
+    data.forEach(function (rowData) {
+      var row = document.createElement('tr');
+      for (var key in rowData) {
+        var cell = document.createElement('td');
+        cell.textContent = rowData[key];
+        row.appendChild(cell);
+      }
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+
+    // Append table to container
+    tableContainer.appendChild(table);
   }
 
   // Event listener for the button click
