@@ -31,18 +31,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var processedData = [];
     events.forEach(function (event) {
       var title = event.querySelector('title').textContent;
-      processedData.push({ Title: title });
+      var link = event.querySelector('link').textContent;
+      processedData.push({ Title: title, Link: link });
     });
     return processedData;
   }
 
   // Define function to update the table
   function updateTable(data) {
-    // Clear existing table
+    // Find the table container
     var tableContainer = document.getElementById('tableContainer');
-    if (tableContainer.firstChild) {
-      tableContainer.removeChild(tableContainer.firstChild);
+
+    // Check if the container exists
+    if (!tableContainer) {
+      console.error('Table container not found in the document.');
+      return;
     }
+
+    // Clear existing content
+    tableContainer.innerHTML = '';
 
     // Create table element
     var table = document.createElement('table');
