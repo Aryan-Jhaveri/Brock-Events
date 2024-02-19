@@ -7,11 +7,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brock University Events</title>
+  <style>
+    .event-table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .event-table th, .event-table td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+  </style>
 </head>
 
 <body>
   <h1>Brock University Events</h1>
   <button id="processBtn">Process Events</button>
+
+  <!-- Container for the table -->
+  <div id="tableContainer"></div>
 
   <!-- Include the script.js file -->
   <script src="script.js"></script>
