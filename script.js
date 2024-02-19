@@ -25,12 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
     console.log(startElement); // Log start element
     console.log(endElement); // Log end element
-
+    
     const startTime = startElement ? startElement.textContent : 'Not available'; // Check if start element exists
     const endTime = endElement ? endElement.textContent : 'Not available'; // Check if end element exists
     
     console.log("Start Time:", startTime); // Log start time
     console.log("End Time:", endTime); // Log end time
+
 
     row.insertCell().textContent = formatDateTime(startTime);
     
