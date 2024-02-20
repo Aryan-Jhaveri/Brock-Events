@@ -9,22 +9,25 @@ $(document).ready(function () {
     const sunday = moment(today).day(7);  // Set to the next Sunday
     $("#endOfWeek").val(sunday.format("YYYY-MM-DD"));
 
-    // Initialize datepicker for start and end date selection
- $("#startOfWeek, #endOfWeek").datepicker({
+$("#startOfWeek, #endOfWeek").datepicker({
     dateFormat: "yy-mm-dd",
     showOn: "focus",
     timeZone: "UTC", 
-        beforeShow: function (input, inst) {
-            inst.dpDiv.css({
-                top: $(input).offset().top + $(input).outerHeight(),
-                left: $(input).offset().left
-            });
-        },
-        onSelect: function () {
-            // You can optionally hide the calendar after a date is selected
-            $(this).datepicker("hide");
-        }
-    });
+    beforeShow: function (input, inst) {
+        inst.dpDiv.css({
+            top: $(input).offset().top + $(input).outerHeight(),
+            left: $(input).offset().left
+        });
+    },
+    onSelect: function () {
+        // You can optionally hide the calendar after a date is selected
+        $(this).datepicker("hide");
+    },
+    // Explicitly set the date format for parsing
+    parse: function (string) {
+        return moment(string, "YYYY-MM-DD").toDate();
+    },
+});
 
     // Add click event to Apply Filter button
     $("#applyFilter").on("click", applyFilter);
