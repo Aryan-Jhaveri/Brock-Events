@@ -88,24 +88,25 @@ async function displayData() {
         // Add other DataTable configurations here
     });
 
-    // Initialize datepicker for start and end date selection
-    $("#startOfWeek, #endOfWeek").datepicker({
-        dateFormat: "yy-mm-dd",
-        onSelect: function () {
-            table.draw(); // Redraw the DataTable when a date is selected
-        },
-        showOn: "both",
-        buttonImageOnly: true,
-        buttonText: "Select date",
-        beforeShow: function (input, inst) {
-            setTimeout(function () {
-                inst.dpDiv.css({
-                    top: $("#ui-datepicker-div").offset().top + $("#ui-datepicker-div").outerHeight(),
-                    left: $("#ui-datepicker-div").offset().left
-                });
-            }, 0);
-        }
-    });
+$("#startOfWeek, #endOfWeek").datepicker({
+    dateFormat: "yy-mm-dd",
+    showOn: "button",
+    buttonImage: "",
+    buttonImageOnly: true,
+    buttonText: "Select date",
+    beforeShow: function (input, inst) {
+        const buttonId = "#" + $(input).attr("id") + "Button";
+        inst.dpDiv.css({
+            top: $(buttonId).offset().top + $(buttonId).outerHeight(),
+            left: $(buttonId).offset().left
+        });
+    },
+    onSelect: function () {
+        // You can optionally hide the calendar after a date is selected
+        $(this).datepicker("hide");
+        table.draw(); // Redraw the DataTable when a date is selected
+    }
+});
 
     // Apply date range filter
     $("#applyFilter").on("click", function () {
