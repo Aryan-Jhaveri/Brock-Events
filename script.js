@@ -1,5 +1,49 @@
 import moment from 'moment';
-$(document).ready(function () {// Fetch data from the RSS feed
+
+$(document).ready(function () {
+    // Set initial values for the input fields
+    const today = new Date();
+    
+    // Set start of week to today
+    $("#startOfWeek").val(today.toISOString().split('T')[0]);
+
+    // Set end of week to the next Sunday
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() + (0 - today.getDay() + 7) % 7);
+    $("#endOfWeek").val(sunday.toISOString().split('T')[0]);
+
+    // Initialize datepicker for start and end date selection
+    $("#startOfWeek, #endOfWeek").datepicker({
+        dateFormat: "yy-mm-dd",
+        showOn: "focus",
+        beforeShow: function (input, inst) {
+            inst.dpDiv.css({
+                top: $(input).offset().top + $(input).outerHeight(),
+                left: $(input).offset().left
+            });
+        },
+        onSelect: function () {
+            // You can optionally hide the calendar after a date is selected
+            $(this).datepicker("hide");
+        }
+    });
+
+    // Add click event to Apply Filter button
+    $("#applyFilter").on("click", applyFilter);
+
+    // Clear date range filter
+    $("#clearFilter").on("click", function () {
+        // Reset the datepicker values
+        $("#startOfWeek, #endOfWeek").datepicker("setDate", null);
+
+        // Display all data
+        displayData();
+    });
+
+    // Fetch and display data on page load
+    displayData();
+
+
 async function fetchData() {
     try {
         const url = "https://experiencebu.brocku.ca/events.rss";
@@ -200,5 +244,5 @@ $(document).ready(function () {
         displayData();
     });
 });
-
-    });
+    
+});
