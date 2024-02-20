@@ -214,18 +214,18 @@ function applyFilter() {
     const startOfWeek = $("#startOfWeek").datepicker("getDate");
     const endOfWeek = $("#endOfWeek").datepicker("getDate");
 
-    console.log("User-Selected Start Date:", startOfWeek);
-    console.log("User-Selected End Date:", endOfWeek);
-
-    if (startOfWeek && endOfWeek) {
-        const startISO = startOfWeek.toISOString();
-        const endISO = endOfWeek.toISOString();
+    // Check if the dates are valid
+    if (startOfWeek && !isNaN(startOfWeek.getTime()) && endOfWeek && !isNaN(endOfWeek.getTime())) {
+        // Convert dates to ISO format
+        const startISO = startOfWeek.toISOString().split('T')[0];
+        const endISO = endOfWeek.toISOString().split('T')[0];
 
         console.log("Start ISO:", startISO);
         console.log("End ISO:", endISO);
 
         displayData(startISO, endISO);
     } else {
-        console.warn("Please select both start and end dates.");
+        console.warn("Please select both valid start and end dates.");
     }
 }
+
