@@ -66,13 +66,29 @@ function convertToEST(dateTimeString) {
     return formattedDateTime;
 }
 
+    // Custom function to parse date string
+function parseCustomDate(dateString) {
+    // Split the date string into parts
+    const parts = dateString.split(" at ");
+
+    // Extract date and time components
+    const datePart = parts[0];
+    const timePart = parts[1];
+
+    // Parse date using a custom format
+    const parsedDate = new Date(`${datePart} ${timePart}`);
+
+    return parsedDate;
+}
+
+
 async function displayData(start, end) {
     // Call fetchData to retrieve data
     const data = await fetchData();
 
-    // Convert start and end dates to EST using moment.js
-    const startEST = moment(start).startOf('day').tz('America/New_York').format();
-    const endEST = moment(end).endOf('day').tz('America/New_York').format();
+    // Convert start and end dates to EST
+    const startEST = new Date(start + "T00:00:00-05:00");
+    const endEST = new Date(end + "T23:59:59-05:00");
 
     // Log user-selected dates
     console.log("User-Selected Start Date (EST):", startEST);
@@ -80,9 +96,9 @@ async function displayData(start, end) {
 
     // Filter data based on selected start and end dates
     const filteredData = data.filter(event => {
-        // Parse event dates using moment.js
-        const eventStartDate = moment(event.Start, 'dddd, MMMM D, YYYY [at] h:mm:ss A z').tz('America/New_York').format();
-        const eventEndDate = moment(event.End, 'dddd, MMMM D, YYYY [at] h:mm:ss A z').tz('America/New_York').format();
+        // Parse event dates using custom function
+        const eventStartDate = parseCustomDate(event.Start);
+        const eventEndDate = parseCustomDate(event.End);
 
         // Log event dates for debugging
         console.log("Event Start Date (Original):", event.Start);
@@ -90,7 +106,7 @@ async function displayData(start, end) {
         console.log("Event Start Date (Converted):", eventStartDate);
         console.log("Event End Date (Converted):", eventEndDate);
 
-        return moment(eventStartDate).isSameOrAfter(startEST) && moment(eventEndDate).isSameOrBefore(endEST);
+        return eventStartDate >= startEST && eventEndDate <= endEST;
     });
 
     // Log filtered data for debugging
