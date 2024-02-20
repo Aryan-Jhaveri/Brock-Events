@@ -77,7 +77,7 @@ function parseCustomDate(dateString) {
     }
 
     // Construct a string in a format compatible with Date.parse
-    const formattedDateString = dateComponents[1] + (dateComponents[2] ? ` ${dateComponents[2]}` : '');
+    const formattedDateString = dateComponents[1] + (dateComponents[2] ? ` ${dateComponents[2]}` : '') + ' EDT';
 
     // Parse the formatted date string
     const parsedDate = new Date(formattedDateString);
