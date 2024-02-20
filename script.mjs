@@ -10,9 +10,10 @@ $(document).ready(function () {
     $("#endOfWeek").val(sunday.format("YYYY-MM-DD"));
 
     // Initialize datepicker for start and end date selection
-    $("#startOfWeek, #endOfWeek").datepicker({
-        dateFormat: "yy-mm-dd",
-        showOn: "focus",
+ $("#startOfWeek, #endOfWeek").datepicker({
+    dateFormat: "yy-mm-dd",
+    showOn: "focus",
+    timeZone: "UTC", 
         beforeShow: function (input, inst) {
             inst.dpDiv.css({
                 top: $(input).offset().top + $(input).outerHeight(),
