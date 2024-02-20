@@ -6,6 +6,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <title>Brock University Events</title>
   <style>
     .event-table {
@@ -26,19 +28,14 @@
 
     <!-- Add your existing HTML content -->
 
-    <!-- Datepicker for selecting the start of the week -->
-    <label for="startOfWeek">Start of Week:</label>
-    <input type="text" id="startOfWeek" name="startOfWeek">
-    
-    <!-- Datepicker for selecting the end of the week -->
-    <label for="endOfWeek">End of Week:</label>
-    <input type="text" id="endOfWeek" name="endOfWeek">
+<label for="startOfWeek">Start of Week:</label>
+<input type="text" id="startOfWeek" name="startOfWeek">
 
-    <!-- Button to apply the date filter -->
-    <button id="applyDateFilter">Apply Filter</button>
+<label for="endOfWeek">End of Week:</label>
+<input type="text" id="endOfWeek" name="endOfWeek">
 
-    <!-- Button to clear the date filter -->
-    <button id="clearDateFilter">Clear Filter</button>
+<button id="applyFilter">Apply Filter</button>
+<button id="clearFilter">Clear Filter</button>
   
   <!-- Container for the table -->
   <div id="tableContainer"></div>
