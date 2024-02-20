@@ -226,5 +226,7 @@ function applyFilter() {
         console.warn("Please select both start and end dates.");
     }
 }
+    console.log($("#startOfWeek").datepicker("getDate"));
+console.log($("#endOfWeek").datepicker("getDate"));
 
 });
