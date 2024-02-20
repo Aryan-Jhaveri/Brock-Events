@@ -123,6 +123,14 @@ function parseCustomDate(dateString) {
     const monthNames = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const fullMonth = monthNames.indexOf(month);
 
+    // Log intermediate results
+    console.log("Day of Week:", dayOfWeek);
+    console.log("Month:", month);
+    console.log("Day:", day);
+    console.log("Year:", year);
+    console.log("Time:", time);
+    console.log("Time Zone:", timeZone);
+
     // Construct a string in a format compatible with Date.parse
     const formattedDateString = `${fullMonth} ${day}, ${year} ${time} ${timeZone}`;
 
@@ -137,6 +145,7 @@ function parseCustomDate(dateString) {
 
     return parsedDate;
 }
+
 
 
 
