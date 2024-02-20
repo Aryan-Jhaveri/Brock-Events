@@ -90,15 +90,12 @@ async function displayData() {
 
 $("#startOfWeek, #endOfWeek").datepicker({
     dateFormat: "yy-mm-dd",
-    showOn: "button",
-    buttonImage: "",
-    buttonImageOnly: true,
+    showOn: "focus",
     buttonText: "Select date",
     beforeShow: function (input, inst) {
-        const buttonId = "#" + $(input).attr("id") + "Button";
         inst.dpDiv.css({
-            top: $(buttonId).offset().top + $(buttonId).outerHeight(),
-            left: $(buttonId).offset().left
+            top: $(input).offset().top + $(input).outerHeight(),
+            left: $(input).offset().left
         });
     },
     onSelect: function () {
