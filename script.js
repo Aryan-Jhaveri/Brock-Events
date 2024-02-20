@@ -1,93 +1,96 @@
-// script.js
+// Fetch data from the RSS feed
+async function fetchData() {
+    try {
+        const url = "https://experiencebu.brocku.ca/events.rss";
+        const response = await fetch(url);
+        const xmlText = await response.text();
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Define event processing function
-  function processEvents() {
-    // Your AJAX or fetch request to retrieve XML data goes here
-    // For simplicity, I'll use a placeholder URL
-    var url = 'https://experiencebu.brocku.ca/events.rss';
+        // Parse XML content
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
-    // Fetch XML data
-    fetch(url)
-      .then(response => response.text())
-      .then(data => {
-        // Parse XML data
-        var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(data, 'text/xml');
+        // Select all 'item' elements from the XML
+        const events = xmlDoc.querySelectorAll("item");
 
-        // Extract event details
-        var events = xmlDoc.querySelectorAll('item');
+        // Process each 'item' element and extract relevant data
+        const data = [];
+        events.forEach((event) => {
+            // Check if 'enclosure' element exists
+            const enclosureElement = event.querySelector("enclosure");
 
-        // Process events and update the table
-        updateTable(processEventData(events));
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  }
+            const eventData = {
+                // Extract and store the text content of 'title' element
+                Title: getValue(event, "title"),
+                // Extract and store the text content of 'link' element
+                Link: getValue(event, "link"),
+                // Convert and store the 'start' and 'end' elements to EST
+                Start: convertToEST(getValue(event, "start")),
+                End: convertToEST(getValue(event, "end")),
+                // Extract and store the text content of 'description' element
+                Description: getValue(event, "description"),
+                // Extract and store the 'url' attribute from 'enclosure' element (or null if 'enclosure' does not exist)
+                Enclosure: enclosureElement ? `<img src="${enclosureElement.getAttribute("url")}" alt="Event Image">` : null,
+            };
+            data.push(eventData);
+        });
 
-  // Define function to process event data
-  function processEventData(events) {
-    // Your processing logic goes here
-    // For simplicity, I'll just log the titles of events
-    var processedData = [];
-    events.forEach(function (event) {
-      var title = event.querySelector('title').textContent;
-      var link = event.querySelector('link').textContent;
-      processedData.push({ Title: title, Link: link });
-    });
-    return processedData;
-  }
-
-  // Define function to update the table
-  function updateTable(data) {
-    // Find the table container
-    var tableContainer = document.getElementById('tableContainer');
-
-    // Check if the container exists
-    if (!tableContainer) {
-      console.error('Table container not found in the document.');
-      return;
+        return data;
+    } catch (error) {
+        // Log any errors that occur during data fetching
+        console.error("Error fetching data:", error);
+        return [];
     }
+}
 
-    // Clear existing content
-    tableContainer.innerHTML = '';
+// Helper function to get value from an XML element
+function getValue(parentElement, tagName) {
+    // Select the child element with the specified tagName
+    const element = parentElement.querySelector(tagName);
 
-    // Create table element
-    var table = document.createElement('table');
-    table.classList.add('event-table');
+    // Return the text content of the element, or null if the element does not exist
+    return element ? element.textContent : null;
+}
 
-    // Create table header
-    var thead = document.createElement('thead');
-    var headerRow = document.createElement('tr');
+// Helper function to convert time to Eastern Standard Time (EST)
+// Helper function to convert time to Eastern Standard Time (EST) and format it
+function convertToEST(dateTimeString) {
+    // Assuming dateTimeString is in ISO format
+    const utcDateTime = new Date(dateTimeString);
+    const estDateTime = new Date(utcDateTime.toLocaleString("en-US", { timeZone: "America/New_York" }));
 
-    for (var key in data[0]) {
-      var th = document.createElement('th');
-      th.textContent = key;
-      headerRow.appendChild(th);
-    }
+    // Format the date in a more readable format
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
+    const formattedDateTime = estDateTime.toLocaleString("en-US", options);
 
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
+    return formattedDateTime;
+}
 
-    // Create table body
-    var tbody = document.createElement('tbody');
-    data.forEach(function (rowData) {
-      var row = document.createElement('tr');
-      for (var key in rowData) {
-        var cell = document.createElement('td');
-        cell.textContent = rowData[key];
-        row.appendChild(cell);
-      }
-      tbody.appendChild(row);
+
+// Display data in DataTable
+async function displayData() {
+    // Call fetchData to retrieve data
+    const data = await fetchData();
+
+    // Initialize DataTable with retrieved data
+    const table = $("#eventsTable").DataTable({
+        data: data,
+        columns: [
+            { data: "Title" },
+            { data: "Start" },
+            { data: "End" },
+            { data: "Enclosure",
+                render: function (data, type, row) {
+                    // Render the "Enclosure" column as an image hyperlink
+                    return data ? `<a href="${row.Link}" target="_blank">${data}</a>` : "";
+                }
+            },
+        ],
+        // Add other DataTable configurations here
     });
+}
 
-    table.appendChild(tbody);
-
-    // Append table to container
-    tableContainer.appendChild(table);
-  }
-
-  // Event listener for the button click
-  document.getElementById('processBtn').addEventListener('click', function () {
-    processEvents();
-  });
+// Trigger displayData on page load
+$(document).ready(function () {
+    displayData();
 });
+
