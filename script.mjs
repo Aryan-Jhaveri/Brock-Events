@@ -214,6 +214,9 @@ function applyFilter() {
     const startOfWeek = $("#startOfWeek").datepicker("getDate");
     const endOfWeek = $("#endOfWeek").datepicker("getDate");
 
+    console.log("User-Selected Start Date:", startOfWeek);
+    console.log("User-Selected End Date:", endOfWeek);
+
     if (startOfWeek && endOfWeek) {
         const startISO = startOfWeek.toISOString();
         const endISO = endOfWeek.toISOString();
@@ -226,7 +229,3 @@ function applyFilter() {
         console.warn("Please select both start and end dates.");
     }
 }
-    console.log($("#startOfWeek").datepicker("getDate"));
-console.log($("#endOfWeek").datepicker("getDate"));
-
-});
