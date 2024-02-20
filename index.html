@@ -44,9 +44,15 @@
   <script src="script.js"></script>
 <script>
     // Set initial values for the input fields
-    const today = new Date().toISOString().split('T')[0];
-    $("#startOfWeek").val(today);
-    $("#endOfWeek").val(today);
+    const today = new Date();
+    
+    // Set start of week to today
+    $("#startOfWeek").val(today.toISOString().split('T')[0]);
+
+    // Set end of week to the next Sunday
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() + (0 - today.getDay() + 7) % 7);
+    $("#endOfWeek").val(sunday.toISOString().split('T')[0]);
 </script>
 </body>
 
