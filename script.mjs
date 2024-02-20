@@ -1,4 +1,3 @@
-import moment from 'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js';
 
 $(document).ready(function () {
     // Set initial values for the input fields
