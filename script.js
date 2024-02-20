@@ -88,6 +88,16 @@ async function displayData() {
         // Add other DataTable configurations here
     });
 
+// ... Your existing code ...
+
+// Get today's date
+const today = new Date();
+
+// Get the Sunday of this week
+const sunday = new Date(today);
+sunday.setDate(today.getDate() + (0 - today.getDay() + 7) % 7);
+
+// Initialize datepicker for start and end date selection
 $("#startOfWeek, #endOfWeek").datepicker({
     dateFormat: "yy-mm-dd",
     showOn: "focus",
@@ -101,8 +111,15 @@ $("#startOfWeek, #endOfWeek").datepicker({
         // You can optionally hide the calendar after a date is selected
         $(this).datepicker("hide");
         table.draw(); // Redraw the DataTable when a date is selected
-    }
+    },
+    // Set the default date to today and limit selectable dates until Sunday
+    defaultDate: today,
+    minDate: today,
+    maxDate: sunday
 });
+
+// ... Your existing code ...
+
 
     // Apply date range filter
     $("#applyFilter").on("click", function () {
