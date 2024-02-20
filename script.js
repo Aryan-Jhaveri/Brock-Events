@@ -69,12 +69,15 @@ async function displayData(start, end) {
     // Call fetchData to retrieve data
     const data = await fetchData();
 
-    // Filter data based on selected start and end dates
     const filteredData = data.filter(event => {
-        const eventStartDate = new Date(event.Start);
-        const eventEndDate = new Date(event.End);
-        return eventStartDate >= start && eventEndDate <= end;
-    });
+    const eventStartDate = new Date(event.Start);
+    const eventEndDate = new Date(event.End);
+
+    console.log("Event Start Date:", eventStartDate);
+    console.log("Event End Date:", eventEndDate);
+
+    return eventStartDate >= start && eventEndDate <= end;
+});
 
     console.log("Filtered Data:", filteredData);
 
