@@ -1,15 +1,13 @@
-
 $(document).ready(function () {
     // Set initial values for the input fields
-    const today = new Date();
-    
+    const today = moment();  // Use Moment.js to get the current date and time
+
     // Set start of week to today
-    $("#startOfWeek").val(today.toISOString().split('T')[0]);
+    $("#startOfWeek").val(today.format("YYYY-MM-DD"));
 
     // Set end of week to the next Sunday
-    const sunday = new Date(today);
-    sunday.setDate(today.getDate() + (0 - today.getDay() + 7) % 7);
-    $("#endOfWeek").val(sunday.toISOString().split('T')[0]);
+    const sunday = moment(today).day(7);  // Set to the next Sunday
+    $("#endOfWeek").val(sunday.format("YYYY-MM-DD"));
 
     // Initialize datepicker for start and end date selection
     $("#startOfWeek, #endOfWeek").datepicker({
@@ -41,6 +39,7 @@ $(document).ready(function () {
 
     // Fetch and display data on page load
     displayData();
+
 
 
 async function fetchData() {
