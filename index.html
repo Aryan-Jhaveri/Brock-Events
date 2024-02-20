@@ -53,7 +53,10 @@
     const sunday = new Date(today);
     sunday.setDate(today.getDate() + (0 - today.getDay() + 7) % 7);
     $("#endOfWeek").val(sunday.toISOString().split('T')[0]);
+    
 </script>
+ <script type="module" src="path/to/your/script.js"></script>
+
 </body>
 
 </html>
