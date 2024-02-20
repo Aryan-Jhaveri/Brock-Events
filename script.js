@@ -1,6 +1,5 @@
-
+import moment from 'moment';
 $(document).ready(function () {// Fetch data from the RSS feed
-    import moment from 'moment';
 async function fetchData() {
     try {
         const url = "https://experiencebu.brocku.ca/events.rss";
