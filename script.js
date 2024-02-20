@@ -88,11 +88,16 @@ async function displayData() {
         // Add other DataTable configurations here
     });
 
+    // Initialize datepicker for start and end date selection
+    $("#startOfWeek, #endOfWeek").datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function () {
+            table.draw(); // Redraw the DataTable when a date is selected
+        }
+    });
+
     // Apply date range filter
     $("#applyFilter").on("click", function () {
-        const startOfWeek = $("#startOfWeek").val();
-        const endOfWeek = $("#endOfWeek").val();
-
         table.draw(); // Redraw the DataTable to apply the filter
     });
 
@@ -105,8 +110,8 @@ async function displayData() {
     // Add custom filtering based on selected start and end dates
     $.fn.dataTable.ext.search.push(
         function (settings, data, dataIndex) {
-            const startOfWeek = new Date($("#startOfWeek").val());
-            const endOfWeek = new Date($("#endOfWeek").val());
+            const startOfWeek = $("#startOfWeek").datepicker("getDate");
+            const endOfWeek = $("#endOfWeek").datepicker("getDate");
 
             const eventStartDate = new Date(data[1]); // Assuming 'Start' column is at index 1
             const eventEndDate = new Date(data[2]);   // Assuming 'End' column is at index 2
@@ -116,7 +121,6 @@ async function displayData() {
         }
     );
 }
-
 
 // Trigger displayData on page load
 $(document).ready(function () {
