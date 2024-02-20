@@ -109,14 +109,15 @@ function convertToEST(dateTimeString) {
 
 function parseCustomDate(dateString) {
     // Extract date components from the XML date string
-    const dateComponents = dateString.match(/(\w+), (\d+) (\w+) (\d+) at (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/);
+    const dateComponents = dateString.match(/(\w+), (\w+) (\d+), (\d+) at (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/) ||
+                            dateString.match(/(\w+), (\d+) (\w+) (\d+) (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/);
 
     if (!dateComponents) {
         console.error("Invalid date string:", dateString);
         return null;
     }
 
-    const [, dayOfWeek, day, month, year, time, timeZone] = dateComponents;
+    const [, dayOfWeek, month, day, year, time, timeZone] = dateComponents;
 
     // Convert month abbreviation to full month name
     const monthNames = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -136,6 +137,7 @@ function parseCustomDate(dateString) {
 
     return parsedDate;
 }
+
 
 
 
