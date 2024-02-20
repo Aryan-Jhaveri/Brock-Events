@@ -72,20 +72,21 @@ async function displayData(start, end) {
     // Convert start and end dates to EST
     const startEST = new Date(start + "T00:00:00-05:00");
     const endEST = new Date(end + "T23:59:59-05:00");
-
+    // Log user-selected dates
+    console.log("User-Selected Start Date (EST):", startEST);
+    console.log("User-Selected End Date (EST):", endEST);
+    
 const filteredData = data.filter(event => {
     const eventStartDate = new Date(event.Start);
     const eventEndDate = new Date(event.End);
-    console.log("User-Selected Start Date (EST):", startEST);
-    console.log("User-Selected End Date (EST):", endEST);
-
-    console.log("Event Start Date (Original):", event.Start);
-    console.log("Event End Date (Original):", event.End);
-    console.log("Event Start Date (Converted):", eventStartDate);
-    console.log("Event End Date (Converted):", eventEndDate);
+       console.log("Event Start Date (Original):", event.Start);
+        console.log("Event End Date (Original):", event.End);
+        console.log("Event Start Date (Converted):", eventStartDate);
+        console.log("Event End Date (Converted):", eventEndDate);
 
     return eventStartDate >= startEST && eventEndDate <= endEST;
 });
+     console.log("Filtered Data:", filteredData);
     
 
     // Destroy the existing DataTable instance if it exists
