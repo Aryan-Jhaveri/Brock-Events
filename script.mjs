@@ -109,21 +109,35 @@ function convertToEST(dateTimeString) {
 
 function parseCustomDate(dateString) {
     // Extract date components from the XML date string
-    const dateComponents = dateString.match(/(\w+), (\w+) (\d+), (\d+) at (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/);
+    const dateComponents = dateString.match(/(\w+), (\w+) (\d+), (\d+) at (\d+:\d+:\d+) ([APMapm]+) ([A-Za-z]+)/);
 
     if (!dateComponents) {
         console.error("Invalid date string:", dateString);
         return null;
     }
 
-    // Extract components
-    const [, dayOfWeek, month, day, year, time, timeZone] = dateComponents;
+    const [, dayOfWeek, month, day, year, time, ampm, timeZone] = dateComponents;
+
+    // Log intermediate values for debugging
+    console.log("Day of Week:", dayOfWeek);
+    console.log("Month:", month);
+    console.log("Day:", day);
+    console.log("Year:", year);
+    console.log("Time:", time);
+    console.log("AM/PM:", ampm);
+    console.log("Time Zone:", timeZone);
 
     // Construct a string in a format compatible with Date.parse
-    const formattedDateString = `${day} ${month} ${year} ${time} ${timeZone}`;
+    const formattedDateString = `${month} ${day}, ${year} ${time} ${ampm} ${timeZone}`;
+
+    // Log the formatted date string
+    console.log("Formatted Date String:", formattedDateString);
 
     // Parse the formatted date string
     const parsedDate = new Date(formattedDateString);
+
+    // Log the parsed date
+    console.log("Parsed Date:", parsedDate);
 
     return parsedDate;
 }
