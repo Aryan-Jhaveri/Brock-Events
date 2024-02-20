@@ -232,4 +232,4 @@ function applyFilter() {
         console.warn("Please select both valid start and end dates.");
     }
 }
-)}
+)};
