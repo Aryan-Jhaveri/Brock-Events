@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 $(document).ready(function () {// Fetch data from the RSS feed
 async function fetchData() {
     try {
@@ -64,29 +66,36 @@ function convertToEST(dateTimeString) {
     return formattedDateTime;
 }
 
-// Display data in DataTable
 async function displayData(start, end) {
     // Call fetchData to retrieve data
     const data = await fetchData();
 
-    // Convert start and end dates to EST
-    const startEST = new Date(start + "T00:00:00-05:00");
-    const endEST = new Date(end + "T23:59:59-05:00");
+    // Convert start and end dates to EST using moment.js
+    const startEST = moment(start).startOf('day').tz('America/New_York').format();
+    const endEST = moment(end).endOf('day').tz('America/New_York').format();
+
     // Log user-selected dates
     console.log("User-Selected Start Date (EST):", startEST);
     console.log("User-Selected End Date (EST):", endEST);
-    
-const filteredData = data.filter(event => {
-    const eventStartDate = new Date(event.Start);
-    const eventEndDate = new Date(event.End);
-       console.log("Event Start Date (Original):", event.Start);
+
+    // Filter data based on selected start and end dates
+    const filteredData = data.filter(event => {
+        // Parse event dates using moment.js
+        const eventStartDate = moment(event.Start, 'dddd, MMMM D, YYYY [at] h:mm:ss A z').tz('America/New_York').format();
+        const eventEndDate = moment(event.End, 'dddd, MMMM D, YYYY [at] h:mm:ss A z').tz('America/New_York').format();
+
+        // Log event dates for debugging
+        console.log("Event Start Date (Original):", event.Start);
         console.log("Event End Date (Original):", event.End);
         console.log("Event Start Date (Converted):", eventStartDate);
         console.log("Event End Date (Converted):", eventEndDate);
 
-    return eventStartDate >= startEST && eventEndDate <= endEST;
-});
-     console.log("Filtered Data:", filteredData);
+        return moment(eventStartDate).isSameOrAfter(startEST) && moment(eventEndDate).isSameOrBefore(endEST);
+    });
+
+    // Log filtered data for debugging
+    console.log("Filtered Data:", filteredData);
+
     
 
     // Destroy the existing DataTable instance if it exists
