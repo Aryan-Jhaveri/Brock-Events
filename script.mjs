@@ -107,18 +107,20 @@ function convertToEST(dateTimeString) {
     return formattedDateTime;
 }
 
-// Custom function to parse date string from XML
 function parseCustomDate(dateString) {
     // Extract date components from the XML date string
-    const dateComponents = dateString.match(/(\d+ \w+ \d+)(?: at (\d+:\d+:\d+ [APMapm]+))?/);
+    const dateComponents = dateString.match(/(\w+), (\w+) (\d+), (\d+) at (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/);
 
     if (!dateComponents) {
         console.error("Invalid date string:", dateString);
         return null;
     }
 
+    // Extract components
+    const [, dayOfWeek, month, day, year, time, timeZone] = dateComponents;
+
     // Construct a string in a format compatible with Date.parse
-    const formattedDateString = dateComponents[1] + (dateComponents[2] ? ` ${dateComponents[2]}` : '') + ' EDT';
+    const formattedDateString = `${day} ${month} ${year} ${time} ${timeZone}`;
 
     // Parse the formatted date string
     const parsedDate = new Date(formattedDateString);
