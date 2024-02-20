@@ -82,21 +82,22 @@ async function displayData(start, end) {
         $("#eventsTable").DataTable().destroy();
     }
 
-    // Initialize DataTable with filtered data
-    const table = $("#eventsTable").DataTable({
-        data: filteredData,
-        columns: [
-            { data: "Title" },
-            { data: "Start" },
-            { data: "End" },
-            { data: "Enclosure",
-                render: function (data, type, row) {
-                    // Render the "Enclosure" column as an image hyperlink
-                    return data ? `<a href="${row.Link}" target="_blank">${data}</a>` : "";
-                }
-            },
+const table = $("#eventsTable").DataTable({
+    data: filteredData,
+    columns: [
+        { data: "Title" },
+        { data: "Start" },
+        { data: "End" },
+        { data: "Enclosure",
+            render: function (data, type, row) {
+                return data ? `<a href="${row.Link}" target="_blank">${data}</a>` : "";
+            }
+        },
+    ],
+        columnDefs: [
+            { type: 'date', targets: [1, 2] } // Assuming "Start" is at index 1, and "End" is at index 2
         ],
-        // Add other DataTable configurations here
+        // Other DataTable configurations
     });
 
     return table;
