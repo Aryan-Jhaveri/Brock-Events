@@ -73,27 +73,29 @@ async function displayData(start, end) {
     const filteredData = data.filter(event => {
         const eventStartDate = new Date(event.Start);
         const eventEndDate = new Date(event.End);
-
         return eventStartDate >= start && eventEndDate <= end;
     });
+
+    console.log("Filtered Data:", filteredData);
 
     // Destroy the existing DataTable instance if it exists
     if ($.fn.DataTable.isDataTable("#eventsTable")) {
         $("#eventsTable").DataTable().destroy();
     }
 
-const table = $("#eventsTable").DataTable({
-    data: filteredData,
-    columns: [
-        { data: "Title" },
-        { data: "Start" },
-        { data: "End" },
-        { data: "Enclosure",
-            render: function (data, type, row) {
-                return data ? `<a href="${row.Link}" target="_blank">${data}</a>` : "";
-            }
-        },
-    ],
+    // Initialize DataTable with filtered data
+    const table = $("#eventsTable").DataTable({
+        data: filteredData,
+        columns: [
+            { data: "Title" },
+            { data: "Start" },
+            { data: "End" },
+            { data: "Enclosure",
+                render: function (data, type, row) {
+                    return data ? `<a href="${row.Link}" target="_blank">${data}</a>` : "";
+                }
+            },
+        ],
         columnDefs: [
             { type: 'date', targets: [1, 2] } // Assuming "Start" is at index 1, and "End" is at index 2
         ],
@@ -104,23 +106,22 @@ const table = $("#eventsTable").DataTable({
 }
 
 
-// Apply date range filter
 function applyFilter() {
     const startOfWeek = $("#startOfWeek").datepicker("getDate");
     const endOfWeek = $("#endOfWeek").datepicker("getDate");
 
     if (startOfWeek && endOfWeek) {
-        // Convert the date objects to ISO format for comparison
         const startISO = startOfWeek.toISOString();
         const endISO = endOfWeek.toISOString();
 
-        // Display data for the selected date range
+        console.log("Start ISO:", startISO);
+        console.log("End ISO:", endISO);
+
         displayData(startISO, endISO);
     } else {
         console.warn("Please select both start and end dates.");
     }
 }
-
 
 // Trigger displayData on page load
 $(document).ready(function () {
