@@ -108,7 +108,7 @@ function convertToEST(dateTimeString) {
 }
 
 function parseCustomDate(dateString) {
-    // Extract date components from the XML date string
+    console.log("Parsing date:", dateString)
     const dateComponents = dateString.match(/(\w+), (\w+) (\d+), (\d+) at (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/) ||
                             dateString.match(/(\w+), (\d+) (\w+) (\d+) (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/);
 
