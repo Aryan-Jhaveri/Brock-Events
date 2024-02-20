@@ -206,43 +206,4 @@ function applyFilter() {
     }
 }
 
-// Trigger displayData on page load
-$(document).ready(function () {
-    // Set initial values for the input fields
-    const today = new Date();
-    const sunday = new Date(today);
-    sunday.setDate(today.getDate() + (0 - today.getDay() + 7) % 7);
-
-    $("#startOfWeek").val(today.toISOString().split('T')[0]);
-    $("#endOfWeek").val(sunday.toISOString().split('T')[0]);
-
-    // Initialize datepicker for start and end date selection
-    $("#startOfWeek, #endOfWeek").datepicker({
-        dateFormat: "yy-mm-dd",
-        showOn: "focus",
-        beforeShow: function (input, inst) {
-            inst.dpDiv.css({
-                top: $(input).offset().top + $(input).outerHeight(),
-                left: $(input).offset().left
-            });
-        },
-        onSelect: function () {
-            // You can optionally hide the calendar after a date is selected
-            $(this).datepicker("hide");
-        }
-    });
-
-    // Add click event to Apply Filter button
-    $("#applyFilter").on("click", applyFilter);
-
-    // Clear date range filter
-    $("#clearFilter").on("click", function () {
-        // Reset the datepicker values
-        $("#startOfWeek, #endOfWeek").datepicker("setDate", null);
-
-        // Display all data
-        displayData();
-    });
-});
-    
 });
