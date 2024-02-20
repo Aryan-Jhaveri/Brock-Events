@@ -1,4 +1,4 @@
-// Fetch data from the RSS feed
+$(document).ready(function () {// Fetch data from the RSS feed
 async function fetchData() {
     try {
         const url = "https://experiencebu.brocku.ca/events.rss";
@@ -161,3 +161,5 @@ $(document).ready(function () {
         displayData();
     });
 });
+
+    });
