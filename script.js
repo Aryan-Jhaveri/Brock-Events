@@ -78,7 +78,7 @@ async function displayData() {
             { data: "Title" },
             { data: "Start" },
             { data: "End" },
-            { data: "Enclosure",
+            { data: "Photo",
                 render: function (data, type, row) {
                     // Render the "Enclosure" column as an image hyperlink
                     return data ? `<a href="${row.Link}" target="_blank">${data}</a>` : "";
