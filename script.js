@@ -71,8 +71,10 @@ async function displayData(start, end) {
 
     // Filter data based on selected start and end dates
     const filteredData = data.filter(event => {
-        const eventDate = new Date(event.Start);
-        return eventDate >= start && eventDate <= end;
+        const eventStartDate = new Date(event.Start);
+        const eventEndDate = new Date(event.End);
+
+        return eventStartDate >= start && eventEndDate <= end;
     });
 
     // Destroy the existing DataTable instance if it exists
@@ -100,6 +102,7 @@ async function displayData(start, end) {
     return table;
 }
 
+
 // Apply date range filter
 function applyFilter() {
     const startOfWeek = $("#startOfWeek").datepicker("getDate");
@@ -107,15 +110,16 @@ function applyFilter() {
 
     if (startOfWeek && endOfWeek) {
         // Convert the date objects to ISO format for comparison
-        const startISO = startOfWeek.toISOString().split('T')[0];
-        const endISO = endOfWeek.toISOString().split('T')[0];
+        const startISO = startOfWeek.toISOString();
+        const endISO = endOfWeek.toISOString();
 
         // Display data for the selected date range
-        displayData(new Date(startISO), new Date(endISO));
+        displayData(startISO, endISO);
     } else {
         console.warn("Please select both start and end dates.");
     }
 }
+
 
 // Trigger displayData on page load
 $(document).ready(function () {
