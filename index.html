@@ -28,7 +28,6 @@
 <body>
   <h1>Brock University Events</h1>
 <label for="startOfWeek">Start of Week:</label>
-    
 <input type="text" id="startOfWeek" name="startOfWeek" readonly>
 
 <label for="endOfWeek">End of Week:</label>
@@ -43,6 +42,12 @@
     </table>
   <!-- Include the script.js file -->
   <script src="script.js"></script>
+<script>
+    // Set initial values for the input fields
+    const today = new Date().toISOString().split('T')[0];
+    $("#startOfWeek").val(today);
+    $("#endOfWeek").val(today);
+</script>
 </body>
 
 </html>
