@@ -87,7 +87,36 @@ async function displayData() {
         ],
         // Add other DataTable configurations here
     });
+
+    // Apply date range filter
+    $("#applyFilter").on("click", function () {
+        const startOfWeek = $("#startOfWeek").val();
+        const endOfWeek = $("#endOfWeek").val();
+
+        table.draw(); // Redraw the DataTable to apply the filter
+    });
+
+    // Clear date range filter
+    $("#clearFilter").on("click", function () {
+        $("#startOfWeek, #endOfWeek").val("");
+        table.draw(); // Redraw the DataTable to clear the filter
+    });
+
+    // Add custom filtering based on selected start and end dates
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            const startOfWeek = new Date($("#startOfWeek").val());
+            const endOfWeek = new Date($("#endOfWeek").val());
+
+            const eventStartDate = new Date(data[1]); // Assuming 'Start' column is at index 1
+            const eventEndDate = new Date(data[2]);   // Assuming 'End' column is at index 2
+
+            return (!startOfWeek || eventStartDate >= startOfWeek) &&
+                   (!endOfWeek || eventEndDate <= endOfWeek);
+        }
+    );
 }
+
 
 // Trigger displayData on page load
 $(document).ready(function () {
