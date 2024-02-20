@@ -66,17 +66,21 @@ function convertToEST(dateTimeString) {
     return formattedDateTime;
 }
 
-    // Custom function to parse date string
+// Custom function to parse date string from XML
 function parseCustomDate(dateString) {
-    // Split the date string into parts
-    const parts = dateString.split(" at ");
+    // Extract date components from the XML date string
+    const dateComponents = dateString.match(/(\d+ \w+ \d+)(?: at (\d+:\d+:\d+ [APMapm]+))?/);
 
-    // Extract date and time components
-    const datePart = parts[0];
-    const timePart = parts[1];
+    if (!dateComponents) {
+        console.error("Invalid date string:", dateString);
+        return null;
+    }
 
-    // Parse date using a custom format
-    const parsedDate = new Date(`${datePart} ${timePart}`);
+    // Construct a string in a format compatible with Date.parse
+    const formattedDateString = dateComponents[1] + (dateComponents[2] ? ` ${dateComponents[2]}` : '');
+
+    // Parse the formatted date string
+    const parsedDate = new Date(formattedDateString);
 
     return parsedDate;
 }
@@ -95,19 +99,19 @@ async function displayData(start, end) {
     console.log("User-Selected End Date (EST):", endEST);
 
     // Filter data based on selected start and end dates
-    const filteredData = data.filter(event => {
-        // Parse event dates using custom function
-        const eventStartDate = parseCustomDate(event.Start);
-        const eventEndDate = parseCustomDate(event.End);
+ const filteredData = data.filter(event => {
+    // Parse event dates using the updated custom function
+    const eventStartDate = parseCustomDate(event.Start);
+    const eventEndDate = parseCustomDate(event.End);
 
-        // Log event dates for debugging
-        console.log("Event Start Date (Original):", event.Start);
-        console.log("Event End Date (Original):", event.End);
-        console.log("Event Start Date (Converted):", eventStartDate);
-        console.log("Event End Date (Converted):", eventEndDate);
+    // Log event dates for debugging
+    console.log("Event Start Date (Original):", event.Start);
+    console.log("Event End Date (Original):", event.End);
+    console.log("Event Start Date (Converted):", eventStartDate);
+    console.log("Event End Date (Converted):", eventEndDate);
 
-        return eventStartDate >= startEST && eventEndDate <= endEST;
-    });
+    return eventStartDate && eventEndDate && eventStartDate >= startEST && eventEndDate <= endEST;
+});
 
     // Log filtered data for debugging
     console.log("Filtered Data:", filteredData);
