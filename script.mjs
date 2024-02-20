@@ -109,7 +109,7 @@ function convertToEST(dateTimeString) {
 
 function parseCustomDate(dateString) {
     // Extract date components from the XML date string
-    const dateComponents = dateString.match(/(\w+), (\d+) (\w+) (\d+) (\d+:\d+:\d+) ([A-Za-z]+)/);
+    const dateComponents = dateString.match(/(\w+), (\d+) (\w+) (\d+) at (\d+:\d+:\d+ [APMapm]+) ([A-Za-z]+)/);
 
     if (!dateComponents) {
         console.error("Invalid date string:", dateString);
@@ -136,6 +136,7 @@ function parseCustomDate(dateString) {
 
     return parsedDate;
 }
+
 
 
 async function displayData(start, end) {
