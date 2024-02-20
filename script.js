@@ -51,7 +51,6 @@ function getValue(parentElement, tagName) {
     return element ? element.textContent : null;
 }
 
-// Helper function to convert time to Eastern Standard Time (EST)
 // Helper function to convert time to Eastern Standard Time (EST) and format it
 function convertToEST(dateTimeString) {
     // Assuming dateTimeString is in ISO format
@@ -65,51 +64,6 @@ function convertToEST(dateTimeString) {
     return formattedDateTime;
 }
 
-
-// Fetch data from the RSS feed
-async function fetchData() {
-    try {
-        const url = "https://experiencebu.brocku.ca/events.rss";
-        const response = await fetch(url);
-        const xmlText = await response.text();
-
-        // Parse XML content
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-
-        // Select all 'item' elements from the XML
-        const events = xmlDoc.querySelectorAll("item");
-
-        // Process each 'item' element and extract relevant data
-        const data = [];
-        events.forEach((event) => {
-            // Check if 'enclosure' element exists
-            const enclosureElement = event.querySelector("enclosure");
-
-            const eventData = {
-                // Extract and store the text content of 'title' element
-                Title: getValue(event, "title"),
-                // Extract and store the text content of 'link' element
-                Link: getValue(event, "link"),
-                // Convert and store the 'start' and 'end' elements to EST
-                Start: convertToEST(getValue(event, "start")),
-                End: convertToEST(getValue(event, "end")),
-                // Extract and store the text content of 'description' element
-                Description: getValue(event, "description"),
-                // Extract and store the 'url' attribute from 'enclosure' element (or null if 'enclosure' does not exist)
-                Enclosure: enclosureElement ? `<img src="${enclosureElement.getAttribute("url")}" alt="Event Image">` : null,
-            };
-            data.push(eventData);
-        });
-
-        return data;
-    } catch (error) {
-        // Log any errors that occur during data fetching
-        console.error("Error fetching data:", error);
-        return [];
-    }
-}
-
 // Display data in DataTable
 async function displayData(start, end) {
     // Call fetchData to retrieve data
@@ -121,10 +75,14 @@ async function displayData(start, end) {
         return eventDate >= start && eventDate <= end;
     });
 
+    // Destroy the existing DataTable instance if it exists
+    if ($.fn.DataTable.isDataTable("#eventsTable")) {
+        $("#eventsTable").DataTable().destroy();
+    }
+
     // Initialize DataTable with filtered data
     const table = $("#eventsTable").DataTable({
         data: filteredData,
-        destroy: true, // Destroy the existing DataTable instance if it exists
         columns: [
             { data: "Title" },
             { data: "Start" },
@@ -187,18 +145,13 @@ $(document).ready(function () {
 
     // Add click event to Apply Filter button
     $("#applyFilter").on("click", applyFilter);
-});
 
     // Clear date range filter
     $("#clearFilter").on("click", function () {
+        // Reset the datepicker values
         $("#startOfWeek, #endOfWeek").datepicker("setDate", null);
-        table.draw(); // Redraw the DataTable to clear the filter
+
+        // Display all data
+        displayData();
     });
-
-// Trigger displayData on page load
-$(document).ready(function () {
-    displayData();
 });
-
-
-
