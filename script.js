@@ -91,7 +91,6 @@ async function displayData() {
 $("#startOfWeek, #endOfWeek").datepicker({
     dateFormat: "yy-mm-dd",
     showOn: "focus",
-    buttonText: "Select date",
     beforeShow: function (input, inst) {
         inst.dpDiv.css({
             top: $(input).offset().top + $(input).outerHeight(),
