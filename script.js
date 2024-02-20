@@ -93,6 +93,17 @@ async function displayData() {
         dateFormat: "yy-mm-dd",
         onSelect: function () {
             table.draw(); // Redraw the DataTable when a date is selected
+        },
+        showOn: "both",
+        buttonImageOnly: true,
+        buttonText: "Select date",
+        beforeShow: function (input, inst) {
+            setTimeout(function () {
+                inst.dpDiv.css({
+                    top: $("#ui-datepicker-div").offset().top + $("#ui-datepicker-div").outerHeight(),
+                    left: $("#ui-datepicker-div").offset().left
+                });
+            }, 0);
         }
     });
 
@@ -103,7 +114,7 @@ async function displayData() {
 
     // Clear date range filter
     $("#clearFilter").on("click", function () {
-        $("#startOfWeek, #endOfWeek").val("");
+        $("#startOfWeek, #endOfWeek").datepicker("setDate", null);
         table.draw(); // Redraw the DataTable to clear the filter
     });
 
@@ -121,6 +132,12 @@ async function displayData() {
         }
     );
 }
+
+// Trigger displayData on page load
+$(document).ready(function () {
+    displayData();
+});
+
 
 // Trigger displayData on page load
 $(document).ready(function () {
