@@ -44,8 +44,6 @@ $("#startOfWeek, #endOfWeek").datepicker({
     // Fetch and display data on page load
     displayData();
 
-
-
 async function fetchData() {
     try {
         const url = "https://experiencebu.brocku.ca/events.rss";
